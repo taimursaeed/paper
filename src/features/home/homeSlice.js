@@ -11,7 +11,7 @@ export const fetchSections = createAsyncThunk(
     let response;
     const calls = sections.map((section) =>
       axios.get(
-        `https://content.guardianapis.com/${section}?api-key=test&show-fields=trailText,thumbnail&page-size=${
+        `https://content.guardianapis.com/${section}?api-key=test&show-fields=trailText,thumbnail&order-by=newest&page-size=${
           section === "news" ? 8 : 3
         }`
       )
@@ -21,7 +21,6 @@ export const fetchSections = createAsyncThunk(
     await axios
       .all(calls)
       .then((res) => {
-        console.log(res);
         response = res.map((r) => {
           return {
             section: r.data.response.section.webTitle,
@@ -44,6 +43,14 @@ export const homeSlice = createSlice({
     setStatus: (state, action) => {
       state.status = action.payload;
     },
+    reverseArticles(state) {
+      const articles = [...state.articles];
+      console.log(articles);
+      for (const [id, article] of articles.entries()) {
+        articles[id].articles.results = [...article.articles.results].reverse();
+      }
+      state.articles = articles;
+    },
   },
   extraReducers: {
     [fetchSections.pending]: (state) => {
@@ -62,6 +69,6 @@ export const homeSlice = createSlice({
 export const selectAllArticles = (state) => state.home.articles;
 export const selectStatus = (state) => state.home.status;
 export const selectError = (state) => state.home.error;
-export const { setStatus } = homeSlice.actions;
+export const { setStatus, reverseArticles } = homeSlice.actions;
 
 export default homeSlice.reducer;
