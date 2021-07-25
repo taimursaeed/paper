@@ -1,15 +1,15 @@
-import { Flex, Spinner, Select, Button, Icon } from "@chakra-ui/react";
-import React, { useEffect, useState } from "react";
+import { Button, Flex, Icon, Select, Spinner } from "@chakra-ui/react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setStatus as articleSetStatus } from "../article/articleSlice";
+import ArticleSection from "./articleSection";
 import {
   fetchSections,
+  reverseArticles,
   selectAllArticles,
   selectError,
   selectStatus,
-  reverseArticles,
 } from "./homeSlice";
-import ArticleSection from "./articleSection";
 
 export default function Home() {
   const articles = useSelector(selectAllArticles);

@@ -7,7 +7,7 @@ export default function ArticleSection({ articles }) {
       <Grid templateColumns="repeat(3, 1fr)" gap="6" mb="12">
         {articles?.results.map((item) => (
           <GridItem key={item.id} h="350px">
-            <Card {...item} size="xs" />
+            <Card {...item} size="xss" />
           </GridItem>
         ))}
       </Grid>

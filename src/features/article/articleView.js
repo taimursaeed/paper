@@ -22,6 +22,7 @@ export default function ArticleView(props) {
           alt={props.webTitle}
           objectFit="contain"
           mb="2"
+          rounded="xl"
         />
         <Text fontSize="xs" color="gray.500">
           {props.webTitle}
