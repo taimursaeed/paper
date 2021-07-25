@@ -5,22 +5,34 @@ const initialState = {
   status: "idle",
   error: null,
 };
-export const fetchHomeArticles = createAsyncThunk(
-  "articles/fetchHomeArticles",
-  async () => {
-    const response = await axios
-      .get(
-        `https://content.guardianapis.com/news?api-key=test&show-fields=trailText,thumbnail`
-      )
-      .then(function (response) {
-        return response.data.response;
-      })
-      .catch(function (error) {
-        console.log(error);
+export const fetchSections = createAsyncThunk(
+  "articles/fetchSections",
+  async (sections) => {
+    let response = [];
+    for (const section of sections) {
+      console.log(section);
+
+      const call = await axios
+        .get(
+          `https://content.guardianapis.com/${section}?api-key=test&show-fields=trailText,thumbnail&page-size=${
+            section === "news" ? 8 : 3
+          }`
+        )
+        .then(function (response) {
+          return response.data.response;
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+      response.push({
+        section: section,
+        articles: call,
       });
-    return response.results;
+    }
+    return response;
   }
 );
+
 export const homeSlice = createSlice({
   name: "home",
   initialState,
@@ -30,14 +42,14 @@ export const homeSlice = createSlice({
     },
   },
   extraReducers: {
-    [fetchHomeArticles.pending]: (state) => {
+    [fetchSections.pending]: (state) => {
       state.status = "loading";
     },
-    [fetchHomeArticles.fulfilled]: (state, action) => {
+    [fetchSections.fulfilled]: (state, action) => {
       state.status = "succeeded";
       state.articles = action.payload;
     },
-    [fetchHomeArticles.rejected]: (state, action) => {
+    [fetchSections.rejected]: (state, action) => {
       state.status = "failed";
       state.error = action.payload;
     },

@@ -1,16 +1,16 @@
-import { Flex, Grid, GridItem, Spinner } from "@chakra-ui/react";
+import { Flex, Spinner } from "@chakra-ui/react";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import Card from "../../components/card";
+import { setStatus as articleSetStatus } from "../article/articleSlice";
 import {
-  fetchHomeArticles,
+  fetchSections,
   selectAllArticles,
   selectError,
   selectStatus,
 } from "./homeSlice";
-import { setStatus as articleSetStatus } from "../article/articleSlice";
+import ArticleSection from "./articleSection";
 
-export default function Home(props) {
+export default function Home() {
   const articles = useSelector(selectAllArticles);
   const status = useSelector(selectStatus);
   const error = useSelector(selectError);
@@ -19,7 +19,7 @@ export default function Home(props) {
     console.log("home useeffect");
     if (status === "idle") {
       console.log("fetching home articles");
-      dispatch(fetchHomeArticles());
+      dispatch(fetchSections(["news", "sport", "culture", "lifeandstyle"]));
     }
     dispatch(articleSetStatus("idle"));
   }, [status, dispatch]);
@@ -38,15 +38,9 @@ export default function Home(props) {
       </Flex>
     );
   } else if (status === "succeeded") {
-    content = (
-      <Grid templateColumns="repeat(3, 1fr)" gap="6">
-        {articles.map((item) => (
-          <GridItem key={item.id} h="350px">
-            <Card {...item} size="xs" />
-          </GridItem>
-        ))}
-      </Grid>
-    );
+    content = articles.map((section) => {
+      return <ArticleSection articles={section.articles} />;
+    });
   } else if (status === "error") {
     content = { error };
   }
