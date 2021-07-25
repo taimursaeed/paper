@@ -8,27 +8,31 @@ const initialState = {
 export const fetchSections = createAsyncThunk(
   "articles/fetchSections",
   async (sections) => {
-    let response = [];
-    for (const section of sections) {
-      console.log(section);
+    let response;
+    const calls = sections.map((section) =>
+      axios.get(
+        `https://content.guardianapis.com/${section}?api-key=test&show-fields=trailText,thumbnail&page-size=${
+          section === "news" ? 8 : 3
+        }`
+      )
+    );
 
-      const call = await axios
-        .get(
-          `https://content.guardianapis.com/${section}?api-key=test&show-fields=trailText,thumbnail&page-size=${
-            section === "news" ? 8 : 3
-          }`
-        )
-        .then(function (response) {
-          return response.data.response;
-        })
-        .catch(function (error) {
-          console.log(error);
+    //concurrent calls
+    await axios
+      .all(calls)
+      .then((res) => {
+        console.log(res);
+        response = res.map((r) => {
+          return {
+            section: r.data.response.section.webTitle,
+            articles: r.data.response,
+          };
         });
-      response.push({
-        section: section,
-        articles: call,
+      })
+      .catch(function (error) {
+        console.log(error);
       });
-    }
+
     return response;
   }
 );
