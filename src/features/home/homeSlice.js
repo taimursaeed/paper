@@ -1,10 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
-const initialState = {
-  articles: [],
-  status: "idle",
-  error: null,
-};
 export const fetchSections = createAsyncThunk(
   "articles/fetchSections",
   async (sections) => {
@@ -38,7 +33,11 @@ export const fetchSections = createAsyncThunk(
 
 export const homeSlice = createSlice({
   name: "home",
-  initialState,
+  initialState: {
+    articles: [],
+    status: "idle",
+    error: null,
+  },
   reducers: {
     setStatus: (state, action) => {
       state.status = action.payload;

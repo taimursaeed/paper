@@ -1,10 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-const initialState = {
-  article: null,
-  status: "idle",
-  error: null,
-};
+
 export const fetchArticle = createAsyncThunk(
   "article/fetchArticle",
   async (articleID) => {
@@ -23,7 +19,11 @@ export const fetchArticle = createAsyncThunk(
 );
 export const articleSlice = createSlice({
   name: "article",
-  initialState,
+  initialState:{
+    article: null,
+    status: "idle",
+    error: null,
+  },
   reducers: {
     setStatus: (state, action) => {
       state.status = action.payload;
