@@ -23,7 +23,7 @@ export default function Card(props) {
           <Image
             boxSize="100%"
             src={
-              props.fields.thumbnail ||
+              props.fields?.thumbnail ||
               "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/450px-No_image_available.svg.png"
             }
             alt={props.webTitle}
@@ -43,7 +43,8 @@ export default function Card(props) {
               {props.webTitle}
             </Heading>
             <Text fontSize="sm" noOfLines={2}>
-              {props.fields.trailText}
+              {props.fields?.trailText}
+
             </Text>
           </Box>
         </LinkOverlay>

@@ -1,21 +1,18 @@
 import { Input } from "@chakra-ui/react";
-import React from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { updateSearch, selectSearch } from "./searchSlice";
+import { useHistory } from "react-router-dom";
 
 export default function Search() {
-  const search = useSelector(selectSearch);
-  const dispatch = useDispatch();
-
+  const history = useHistory();
   const handleChange = (e) => {
-    dispatch(updateSearch(e.currentTarget.value));
+    const searchTerm = e.currentTarget.value;
+    history.push(`/search?term=${searchTerm}`);
   };
+
   return (
     <Input
       placeholder="Search"
       variant="flushed"
       color="white"
-      value={search}
       onChange={handleChange}
     />
   );

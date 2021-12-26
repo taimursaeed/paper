@@ -3,27 +3,32 @@ import {
   BrowserRouter as Router,
   Route,
   Switch,
-  Redirect,
+  Redirect
 } from "react-router-dom";
 import Navigation from "./components/navigation";
 import Home from "./features/home/home";
 import Article from "./features/article/article";
+import SearchedArticles from "./features/search/searchedArticles";
 import Footer from "./components/footer";
+
 function App() {
   return (
     <ChakraProvider>
       <Router>
         <div className="App">
-          <Navigation />
+          <Navigation/>
           <Container px="4" py="8" maxW="container.lg">
             <Switch>
               <Route path="/" exact>
-                <Home />
+                <Home/>
+              </Route>
+              <Route path="/search" exact>
+                <SearchedArticles/>
               </Route>
               <Route path="/:id">
-                <Article />
+                <Article/>
               </Route>
-              <Redirect to="/" />
+              <Redirect to="/"/>
             </Switch>
           </Container>
           {/* <Footer /> */}
