@@ -1,14 +1,13 @@
 import { Button, Flex, Icon, Select, Spinner } from "@chakra-ui/react";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setStatus as articleSetStatus } from "../article/articleSlice";
 import ArticleSection from "./articleSection";
 import {
   fetchSections,
   reverseArticles,
   selectAllArticles,
   selectError,
-  selectStatus,
+  selectStatus, setStatus
 } from "./homeSlice";
 
 export default function Home() {
@@ -18,13 +17,15 @@ export default function Home() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    console.log("home useeffect");
     if (status === "idle") {
-      console.log("fetching home articles");
       dispatch(fetchSections(["news", "sport", "culture", "lifeandstyle"]));
     }
-    dispatch(articleSetStatus("idle"));
-  }, [status, dispatch]);
+    return () => {
+      console.log("home cleanup");
+      dispatch(setStatus("idle"));
+      console.log("home status after dispatch:", status);
+    };
+  }, []);
 
   let content;
   if (status === "loading") {
@@ -41,7 +42,7 @@ export default function Home() {
     );
   } else if (status === "succeeded") {
     content = articles.map((section, id) => {
-      return <ArticleSection articles={section.articles} key={id} />;
+      return <ArticleSection articles={section.articles} key={id}/>;
     });
   } else if (status === "error") {
     content = { error };

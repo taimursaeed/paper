@@ -6,9 +6,8 @@ import {
   fetchArticle,
   selectArticle,
   selectError,
-  selectStatus,
+  selectStatus, setStatus
 } from "./articleSlice";
-import { setStatus as homeSetStatus } from "../home/homeSlice";
 import ArticleView from "./articleView";
 
 export default function Article() {
@@ -20,13 +19,16 @@ export default function Article() {
   const location = useLocation();
 
   useEffect(() => {
-    console.log(location.pathname);
     const trimmedLocation = location.pathname.replace("/", "");
     if (status === "idle") {
       dispatch(fetchArticle(trimmedLocation));
     }
-    dispatch(homeSetStatus("idle"));
-  }, [status, dispatch, location.pathname, article]);
+    return () => {
+      console.log("article cleanup");
+      dispatch(setStatus("idle"));
+      console.log("article status after dispatch:", status);
+    };
+  }, [location.pathname]);
   let content;
 
   if (status === "loading") {
@@ -42,7 +44,6 @@ export default function Article() {
       </Flex>
     );
   } else if (status === "succeeded") {
-    console.log(article);
     content = <ArticleView {...article} />;
   } else if (status === "error") {
     content = { error };

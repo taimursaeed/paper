@@ -44,7 +44,6 @@ export const homeSlice = createSlice({
     },
     reverseArticles(state) {
       const articles = [...state.articles];
-      console.log(articles);
       for (const [id, article] of articles.entries()) {
         articles[id].articles.results = [...article.articles.results].reverse();
       }
