@@ -1,5 +1,5 @@
 import { Box, Container, Flex, Heading, Spacer } from "@chakra-ui/react";
-import Search from "../features/search/search";
+import SearchInput from "./searchInput";
 import { Link } from "react-router-dom";
 export default function Navigation() {
   return (
@@ -14,7 +14,7 @@ export default function Navigation() {
             </Box>
             <Spacer />
             <Box>
-              <Search />
+              <SearchInput />
             </Box>
           </Flex>
         </Container>

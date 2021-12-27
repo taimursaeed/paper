@@ -1,7 +1,7 @@
 import { Input } from "@chakra-ui/react";
 import { useHistory } from "react-router-dom";
 
-export default function Search() {
+export default function SearchInput() {
   const history = useHistory();
   const handleChange = (e) => {
     const searchTerm = e.currentTarget.value;
