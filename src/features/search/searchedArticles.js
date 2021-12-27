@@ -38,7 +38,7 @@ export default function SearchedArticles() {
       </Flex>
     );
   } else if (status === "succeeded") {
-    content = searchedArticles.results.length > 0 ? <ArticleSection articles={searchedArticles}/> :
+    content = searchedArticles?.results?.length > 0 ? <ArticleSection articles={searchedArticles}/> :
       <Text align="center">No article found</Text>;
   } else if (status === "error") {
     content = { error };
@@ -46,7 +46,7 @@ export default function SearchedArticles() {
 
   return (
     <>
-      {searchedArticles.results.length > 0 ?
+      {searchedArticles?.results?.length > 0 ?
         <Flex justifyContent="flex-end" mb="-12">
           <Button colorScheme="blue" pl="4" pr="4" mr="4">
             <Icon width="1rem" mr="1">
