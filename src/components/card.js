@@ -26,7 +26,6 @@ export default function Card(props) {
               props.fields?.thumbnail ||
               "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/450px-No_image_available.svg.png"
             }
-            alt={props.webTitle}
             objectFit="cover"
           />
           <Box

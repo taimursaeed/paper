@@ -1,4 +1,4 @@
-import { Button, Flex, Icon, Select, Spinner } from "@chakra-ui/react";
+import { Button, Flex, Heading, Icon, Select, Spinner } from "@chakra-ui/react";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import ArticleSection from "./articleSection";
@@ -9,6 +9,8 @@ import {
   selectError,
   selectStatus, setStatus
 } from "./homeSlice";
+import BookmarkButton from "../../components/bookmarkButton";
+import ArticleSorter from "../../components/articleSorter";
 
 export default function Home() {
   const articles = useSelector(selectAllArticles);
@@ -42,7 +44,10 @@ export default function Home() {
     );
   } else if (status === "succeeded") {
     content = articles.map((section, id) => {
-      return <ArticleSection articles={section.articles} key={id}/>;
+      return <>
+        <Heading mb="6" just="left">{section.articles.section.webTitle}</Heading>
+        <ArticleSection articles={section.articles} key={id}/>
+      </>;
     });
   } else if (status === "error") {
     content = { error };
@@ -55,33 +60,8 @@ export default function Home() {
   return (
     <>
       <Flex justifyContent="flex-end" mb="-12">
-        <Button colorScheme="blue" pl="4" pr="4" mr="4">
-          <Icon width="1rem" mr="1">
-            <svg
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"
-              ></path>
-            </svg>
-          </Icon>
-          Bookmarks
-        </Button>
-        <Select
-          size="md"
-          onChange={handleOrder}
-          defaultValue="newest"
-          width="200px"
-        >
-          <option value="newest">Newest First</option>
-          <option value="oldest">Oldest First</option>
-        </Select>
+        <BookmarkButton/>
+        <ArticleSorter onChange={handleOrder}/>
       </Flex>
       {content}
     </>

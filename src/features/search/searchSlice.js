@@ -1,12 +1,20 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
+let test = [];
 export const fetchSearchedArticles = createAsyncThunk(
   "articles/search",
-  async (searchVal) => {
+  async (searchVal, { getState, dispatch }) => {
+    const state = getState();
+    if (selectSearchTerm(state) !== searchVal) {
+      dispatch(resetPageIndex());
+      dispatch(clearArticles());
+      dispatch(setSearchTerm(searchVal));
+    }
+    console.log("Searching for: ", searchVal);
     const response = await axios
       .get(
-        `https://content.guardianapis.com/search?show-fields=thumbnail&q=${searchVal}&api-key=test`
+        `https://content.guardianapis.com/search?show-fields=thumbnail&q=${searchVal}&api-key=test&page-size=10&page=${state.search.pageIndex}`
       )
       .then(function(res) {
         return res.data.response;
@@ -14,16 +22,32 @@ export const fetchSearchedArticles = createAsyncThunk(
       .catch(function(error) {
         console.log(error);
       });
-    return { section: {webTitle: "Search results" },  results: response.results };
+    return response.results;
   }
 );
 
 export const searchSlice = createSlice({
   name: "search",
   initialState: {
-    articles: [],
+    searchTerm: "",
+    articles: { section: { webTitle: "Search results" }, results: [] },
     status: "idle",
-    error: null
+    error: null,
+    pageIndex: 1
+  },
+  reducers: {
+    setSearchTerm: (state, action) => {
+      state.searchTerm = action.payload;
+    },
+    incrementPageIndex: (state) => {
+      state.pageIndex++;
+    },
+    resetPageIndex: (state) => {
+      state.pageIndex = 1;
+    },
+    clearArticles: (state) => {
+      state.articles.results = [];
+    }
   },
   extraReducers: {
     [fetchSearchedArticles.pending]: (state) => {
@@ -31,7 +55,7 @@ export const searchSlice = createSlice({
     },
     [fetchSearchedArticles.fulfilled]: (state, action) => {
       state.status = "succeeded";
-      state.articles = action.payload;
+      state.articles.results = state.articles.results.concat(action.payload);
     },
     [fetchSearchedArticles.rejected]: (state, action) => {
       state.status = "failed";
@@ -43,5 +67,7 @@ export const searchSlice = createSlice({
 export const selectStatus = (state) => state.search.status;
 export const selectError = (state) => state.search.error;
 export const selectSearchedArticles = (state) => state.search.articles;
-
+export const selectPageIndex = (state) => state.search.pageIndex;
+export const selectSearchTerm = (state) => state.search.searchTerm;
+export const { incrementPageIndex, clearArticles, resetPageIndex, setSearchTerm } = searchSlice.actions;
 export default searchSlice.reducer;
