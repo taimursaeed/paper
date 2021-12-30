@@ -1,4 +1,4 @@
-import { Button, Flex, Heading, Icon, Select, Spinner } from "@chakra-ui/react";
+import { Button, Flex, Heading, Icon, Select, Spinner, Box } from "@chakra-ui/react";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import ArticleSection from "./articleSection";
@@ -44,10 +44,10 @@ export default function Home() {
     );
   } else if (status === "succeeded") {
     content = articles.map((section, id) => {
-      return <>
+      return <Box key={id} >
         <Heading mb="6" just="left">{section.articles.section.webTitle}</Heading>
-        <ArticleSection articles={section.articles} key={id}/>
-      </>;
+        <ArticleSection articles={section.articles}/>
+      </Box>;
     });
   } else if (status === "error") {
     content = { error };
