@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { Button, Flex, Heading, Icon, Select, Text } from "@chakra-ui/react";
+import { Flex, Heading, Text } from "@chakra-ui/react";
 import { useDispatch, useSelector } from "react-redux";
-import { reverseArticles } from "../home/homeSlice";
 import {
   fetchSearchedArticles,
   incrementPageIndex,
+  reverseArticles,
   selectError,
   selectPageIndex,
   selectSearchedArticles,
@@ -47,14 +47,16 @@ export default function SearchedArticles() {
   useEffect(() => {
     dispatch(fetchSearchedArticles(searchTerm));
   }, [searchTerm]);
-
+  const handleOrder = () => {
+    dispatch(reverseArticles());
+  };
   return (
     <>
       <Flex justifyContent="space-between">
         <Heading mb="6" just="left">{searchedArticles.section.webTitle}</Heading>
         <Flex justifyContent="flex-end">
           <BookmarkButton/>
-          <ArticleSorter/>
+          <ArticleSorter onChange={handleOrder}/>
         </Flex>
       </Flex>
       {status === "failed" ?

@@ -1,7 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
-let test = [];
 export const fetchSearchedArticles = createAsyncThunk(
   "articles/search",
   async (searchVal, { getState, dispatch }) => {
@@ -47,6 +46,9 @@ export const searchSlice = createSlice({
     },
     clearArticles: (state) => {
       state.articles.results = [];
+    },
+    reverseArticles(state) {
+      state.articles.results = [...state.articles.results].reverse();
     }
   },
   extraReducers: {
@@ -69,5 +71,11 @@ export const selectError = (state) => state.search.error;
 export const selectSearchedArticles = (state) => state.search.articles;
 export const selectPageIndex = (state) => state.search.pageIndex;
 export const selectSearchTerm = (state) => state.search.searchTerm;
-export const { incrementPageIndex, clearArticles, resetPageIndex, setSearchTerm } = searchSlice.actions;
+export const {
+  incrementPageIndex,
+  clearArticles,
+  resetPageIndex,
+  setSearchTerm,
+  reverseArticles
+} = searchSlice.actions;
 export default searchSlice.reducer;

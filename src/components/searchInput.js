@@ -2,11 +2,9 @@ import { Input } from "@chakra-ui/react";
 import { useHistory } from "react-router-dom";
 import { useEffect, useMemo } from "react";
 import { debounce } from "lodash/function";
-import { useDispatch } from "react-redux";
 
 export default function SearchInput() {
   const history = useHistory();
-  const dispatch = useDispatch();
 
   const changeHandler = (e) => {
     const searchTerm = e.target.value;
@@ -20,7 +18,7 @@ export default function SearchInput() {
     return () => {
       debouncedChangeHandler.cancel();
     };
-  }, []);
+  }, [debouncedChangeHandler]);
 
   return (
     <Input
