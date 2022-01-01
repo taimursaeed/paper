@@ -7,7 +7,6 @@ import { selectBookmarkArticlesIDs } from "../bookmarks/bookmarksSlice";
 export default function ArticleView(props) {
   const articleID = props.id;
   const bookmarkArticleIDs = useSelector(selectBookmarkArticlesIDs);
-  console.log(articleID)
   let bookmarkType = "add";
   if (bookmarkArticleIDs.includes(articleID)) {
     bookmarkType = "remove";

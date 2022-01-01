@@ -22,7 +22,7 @@ const BookmarkButton = ({ articleID, type, mb }) => {
         description: `Article ${type === "add" ? "added" : "removed"} in Bookmarks`,
         status: `${type === "add" ? "success" : "error"}`,
         duration: 1000,
-        position: 'bottom-right',
+        position: "bottom-right"
       });
     }
   };

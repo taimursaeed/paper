@@ -6,7 +6,7 @@ import {
   reverseArticles,
   selectBookmarkArticles,
   selectError,
-  selectStatus
+  selectStatus, setBookmarks
 } from "./bookmarksSlice";
 import Loader from "../../components/loader";
 import ArticleSection from "../home/articleSection";
@@ -19,6 +19,7 @@ const Bookmarks = () => {
   const bookmarkArticles = useSelector(selectBookmarkArticles);
 
   useEffect(() => {
+    dispatch(setBookmarks(localStorage.getItem("articleIDs").split(",")));
     dispatch(fetchBookmarkArticles());
   }, []);
 

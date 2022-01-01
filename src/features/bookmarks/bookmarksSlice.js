@@ -21,6 +21,13 @@ export const fetchBookmarkArticles = createAsyncThunk("articles/fetchBookmarkArt
   return response;
 });
 
+export const localStorageMiddleware = store => next => action => {
+  next(action);
+  if (bookmarksSlice.actions.addBookmark.match(action) || bookmarksSlice.actions.removeBookmark.match(action)) {
+    localStorage.setItem("articleIDs", selectBookmarkArticlesIDs(store.getState()));
+  }
+};
+
 export const bookmarksSlice = createSlice({
   name: "bookmarks",
   initialState: {
@@ -30,6 +37,9 @@ export const bookmarksSlice = createSlice({
     error: null
   },
   reducers: {
+    setBookmarks: (state, action) => {
+      state.articleIDs = action.payload;
+    },
     addBookmark: (state, action) => {
       state.articleIDs.push(action.payload);
     },
@@ -50,6 +60,9 @@ export const bookmarksSlice = createSlice({
     }, [fetchBookmarkArticles.rejected]: (state, action) => {
       state.status = "failed";
       state.error = action.payload;
+    },
+    ["bookmarks/addBookmark"]: (state) => {
+      console.log("addBookmark extrareducers");
     }
   }
 });
@@ -57,6 +70,6 @@ export const selectBookmarkArticlesIDs = (state) => state.bookmarks.articleIDs;
 export const selectBookmarkArticles = (state) => state.bookmarks.articles;
 export const selectStatus = (state) => state.bookmarks.status;
 export const selectError = (state) => state.bookmarks.error;
-export const { setStatus, addBookmark, removeBookmark, reverseArticles } = bookmarksSlice.actions;
+export const { setStatus, addBookmark, removeBookmark, reverseArticles, setBookmarks } = bookmarksSlice.actions;
 
 export default bookmarksSlice.reducer;
