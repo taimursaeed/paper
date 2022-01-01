@@ -17,7 +17,7 @@ const BookmarkButton = ({ articleID, type, mb }) => {
     } else if (type === "remove") {
       dispatch(removeBookmark(articleID));
     }
-    if (type !== "view") {
+    if (type != "view") {
       toast({
         description: `Article ${type === "add" ? "added" : "removed"} in Bookmarks`,
         status: `${type === "add" ? "success" : "error"}`,
