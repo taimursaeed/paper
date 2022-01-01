@@ -55,7 +55,7 @@ export default function SearchedArticles() {
       <Flex justifyContent="space-between">
         <Heading mb="6" just="left">{searchedArticles.section.webTitle}</Heading>
         <Flex justifyContent="flex-end">
-          <BookmarkButton/>
+          <BookmarkButton type="view"/>
           <ArticleSorter onChange={handleOrder}/>
         </Flex>
       </Flex>
@@ -64,7 +64,7 @@ export default function SearchedArticles() {
       {status === "loading" && pageIndex == 1
         ? <Loader/>
         : searchedArticles?.results?.length > 0
-          ? <ArticleSection articles={searchedArticles}/>
+          ? <ArticleSection articles={searchedArticles.results}/>
           : <Text align="center">No article found</Text>}
       {isBottom && status === "loading" ? <Loader/> : ""}
     </>

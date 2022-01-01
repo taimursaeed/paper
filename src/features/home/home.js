@@ -46,10 +46,10 @@ export default function Home() {
     content = articles.map((section, id) => {
       return <Box key={id} >
         <Heading mb="6" just="left">{section.articles.section.webTitle}</Heading>
-        <ArticleSection articles={section.articles}/>
+        <ArticleSection articles={section.articles.results}/>
       </Box>;
     });
-  } else if (status === "error") {
+  } else if (status === "failed") {
     content = { error };
   }
 
@@ -60,7 +60,7 @@ export default function Home() {
   return (
     <>
       <Flex justifyContent="flex-end" mb="-12">
-        <BookmarkButton/>
+        <BookmarkButton type="view"/>
         <ArticleSorter onChange={handleOrder}/>
       </Flex>
       {content}

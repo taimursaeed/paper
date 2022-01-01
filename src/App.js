@@ -10,6 +10,7 @@ import Home from "./features/home/home";
 import Article from "./features/article/article";
 import SearchedArticles from "./features/search/searchedArticles";
 import Footer from "./components/footer";
+import Bookmarks from "./features/bookmarks/bookmarks";
 
 function App() {
   return (
@@ -22,7 +23,9 @@ function App() {
               <Route path="/" exact>
                 <Home/>
               </Route>
-              <Route path="/search" exact>
+              <Route path="/bookmarks" exact>
+                <Bookmarks/>
+              </Route> <Route path="/search" exact>
                 <SearchedArticles/>
               </Route>
               <Route path="/:id">

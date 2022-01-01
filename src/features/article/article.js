@@ -45,7 +45,7 @@ export default function Article() {
     );
   } else if (status === "succeeded") {
     content = <ArticleView {...article} />;
-  } else if (status === "error") {
+  } else if (status === "failed") {
     content = { error };
   }
 

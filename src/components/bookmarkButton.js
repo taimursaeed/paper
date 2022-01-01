@@ -1,8 +1,34 @@
-import { Button, Icon } from "@chakra-ui/react";
+import { Button, Icon, useToast } from "@chakra-ui/react";
+import { useHistory } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { addBookmark, removeBookmark, selectBookmarkArticlesIDs } from "../features/bookmarks/bookmarksSlice";
+import { useEffect } from "react";
 
-const BookmarkButton = () => {
+const BookmarkButton = ({ articleID, type, mb }) => {
+  const history = useHistory();
+  const dispatch = useDispatch();
+  const bookmarkArticlesIDs = useSelector(selectBookmarkArticlesIDs);
+  const toast = useToast();
+
+  const handleClick = () => {
+    if (type === "view") history.push(`/bookmarks`);
+    else if (type === "add") {
+      dispatch(addBookmark(articleID));
+    } else if (type === "remove") {
+      dispatch(removeBookmark(articleID));
+    }
+    if (type !== "view") {
+      toast({
+        description: `Article ${type === "add" ? "added" : "removed"} in Bookmarks`,
+        status: `${type === "add" ? "success" : "error"}`,
+        duration: 1000,
+        position: 'bottom-right',
+      });
+    }
+  };
+
   return (
-    <Button colorScheme="blue" pl="4" pr="4" mr="4">
+    <Button colorScheme={`${type === "remove" ? "red" : "blue"}`} pl="4" pr="4" mr="4" mb={mb} onClick={handleClick}>
       <Icon width="1rem" mr="1">
         <svg
           fill="none"
@@ -18,7 +44,7 @@ const BookmarkButton = () => {
           ></path>
         </svg>
       </Icon>
-      Bookmarks
+      {type[0].toUpperCase()}{type.slice(1)} Bookmarks
     </Button>
   );
 };
