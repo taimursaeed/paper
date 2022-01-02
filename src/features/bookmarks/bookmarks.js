@@ -19,7 +19,13 @@ const Bookmarks = () => {
   const bookmarkArticles = useSelector(selectBookmarkArticles);
 
   useEffect(() => {
-    dispatch(setBookmarks(localStorage.getItem("articleIDs").split(",")));
+    let articles = localStorage.getItem("articleIDs");
+    if (articles != null && articles != "undefined") {
+      articles = articles.split(",");
+    } else {
+      articles = [];
+    }
+    dispatch(setBookmarks(articles));
     dispatch(fetchBookmarkArticles());
   }, []);
 
