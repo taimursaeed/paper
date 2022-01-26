@@ -33,6 +33,8 @@ const Bookmarks = () => {
     dispatch(reverseArticles());
   };
   if (status === "failed") console.log(error);
+  const RenderBookmarks = () => bookmarkArticles?.length > 0 ? <ArticleSection articles={bookmarkArticles}/> :
+    <Text textAlign="center">There are no bookmarked articles</Text>;
 
   return (
     <>
@@ -46,8 +48,7 @@ const Bookmarks = () => {
         <Text textAlign="center">There was an issue fetching the articles. Please try again.</Text> : ""}
       {status === "loading"
         ? <Loader/>
-        : bookmarkArticles?.length > 0 ? <ArticleSection articles={bookmarkArticles}/> :
-          <Text textAlign="center">There are no bookmarked articles</Text>}
+        : RenderBookmarks}
 
     </>);
 };
