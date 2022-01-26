@@ -20,7 +20,7 @@ const Bookmarks = () => {
 
   useEffect(() => {
     let articles = localStorage.getItem("articleIDs");
-    if (articles !== null && articles !== "undefined") {
+    if (articles !== null && articles !== "undefined" && articles.length > 0) {
       articles = articles.split(",");
     } else {
       articles = [];
