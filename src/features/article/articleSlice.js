@@ -14,7 +14,7 @@ export const fetchArticle = createAsyncThunk(
       .catch(function (error) {
         console.log(error);
       });
-    return response.content;
+    return response?.content;
   }
 );
 export const articleSlice = createSlice({

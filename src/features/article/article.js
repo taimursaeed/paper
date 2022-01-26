@@ -1,13 +1,8 @@
-import { Spinner, Flex } from "@chakra-ui/react";
+import { Flex, Spinner } from "@chakra-ui/react";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
-import {
-  fetchArticle,
-  selectArticle,
-  selectError,
-  selectStatus, setStatus
-} from "./articleSlice";
+import { fetchArticle, selectArticle, selectError, selectStatus, setStatus } from "./articleSlice";
 import ArticleView from "./articleView";
 
 export default function Article() {
@@ -19,16 +14,14 @@ export default function Article() {
   const location = useLocation();
 
   useEffect(() => {
+    console.log("Article JS useEffect called");
     const trimmedLocation = location.pathname.replace("/", "");
-    if (status === "idle") {
-      dispatch(fetchArticle(trimmedLocation));
-    }
+    dispatch(fetchArticle(trimmedLocation));
     return () => {
-      console.log("article cleanup");
+      console.log("Article JS cleanup");
       dispatch(setStatus("idle"));
-      console.log("article status after dispatch:", status);
     };
-  }, [location.pathname]);
+  }, [location.pathname, dispatch]);
   let content;
 
   if (status === "loading") {

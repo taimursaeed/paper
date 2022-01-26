@@ -1,4 +1,4 @@
-import { applyMiddleware, configureStore } from "@reduxjs/toolkit";
+import { configureStore } from "@reduxjs/toolkit";
 import homeReducer from "./features/home/homeSlice";
 import articleSlice from "./features/article/articleSlice";
 import searchSlice from "./features/search/searchSlice";

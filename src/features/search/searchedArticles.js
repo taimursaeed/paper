@@ -5,7 +5,6 @@ import {
   fetchSearchedArticles,
   incrementPageIndex,
   reverseArticles,
-  selectError,
   selectPageIndex,
   selectSearchedArticles,
   selectStatus
@@ -25,31 +24,27 @@ export default function SearchedArticles() {
 
   const searchedArticles = useSelector(selectSearchedArticles);
   const status = useSelector(selectStatus);
-  const error = useSelector(selectError);
   const pageIndex = useSelector(selectPageIndex);
 
   const [isBottom, setIsBottom] = useState(false);
   useScrollPosition(({ prevPos, currPos }) => {
     if (!isBottom && ((currPos.y * -1) >= document.body.offsetHeight - window.innerHeight - 200)) {
       setIsBottom(true);
+      dispatch(incrementPageIndex());
+      dispatch(fetchSearchedArticles(searchTerm));
     } else {
       setIsBottom(false);
     }
-  }, null, null, null, 200, null);
-
-  useEffect(() => {
-    if (isBottom) {
-      dispatch(incrementPageIndex());
-      dispatch(fetchSearchedArticles(searchTerm));
-    }
-  }, [isBottom]);
+  }, null, null, null, 100, null);
 
   useEffect(() => {
     dispatch(fetchSearchedArticles(searchTerm));
-  }, [searchTerm]);
+  }, [dispatch, searchTerm]);
+
   const handleOrder = () => {
     dispatch(reverseArticles());
   };
+
   return (
     <>
       <Flex justifyContent="space-between">
@@ -61,7 +56,7 @@ export default function SearchedArticles() {
       </Flex>
       {status === "failed" ?
         <Text align="center">There was an issue fetching the articles. Please try again.</Text> : ""}
-      {status === "loading" && pageIndex == 1
+      {status === "loading" && pageIndex === 1
         ? <Loader/>
         : searchedArticles?.results?.length > 0
           ? <ArticleSection articles={searchedArticles.results}/>

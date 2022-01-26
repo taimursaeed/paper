@@ -1,14 +1,8 @@
-import { Button, Flex, Heading, Icon, Select, Spinner, Box } from "@chakra-ui/react";
+import { Box, Flex, Heading, Spinner } from "@chakra-ui/react";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import ArticleSection from "./articleSection";
-import {
-  fetchSections,
-  reverseArticles,
-  selectAllArticles,
-  selectError,
-  selectStatus, setStatus
-} from "./homeSlice";
+import { fetchSections, reverseArticles, selectAllArticles, selectError, selectStatus, setStatus } from "./homeSlice";
 import BookmarkButton from "../../components/bookmarkButton";
 import ArticleSorter from "../../components/articleSorter";
 
@@ -19,15 +13,11 @@ export default function Home() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (status === "idle") {
-      dispatch(fetchSections(["news", "sport", "culture", "lifeandstyle"]));
-    }
+    dispatch(fetchSections(["news", "sport", "culture", "lifeandstyle"]));
     return () => {
-      console.log("home cleanup");
       dispatch(setStatus("idle"));
-      console.log("home status after dispatch:", status);
     };
-  }, []);
+  }, [dispatch]);
 
   let content;
   if (status === "loading") {

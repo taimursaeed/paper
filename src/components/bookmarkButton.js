@@ -1,13 +1,11 @@
 import { Button, Icon, useToast } from "@chakra-ui/react";
 import { useHistory } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { addBookmark, removeBookmark, selectBookmarkArticlesIDs } from "../features/bookmarks/bookmarksSlice";
-import { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { addBookmark, removeBookmark } from "../features/bookmarks/bookmarksSlice";
 
 const BookmarkButton = ({ articleID, type, mb }) => {
   const history = useHistory();
   const dispatch = useDispatch();
-  const bookmarkArticlesIDs = useSelector(selectBookmarkArticlesIDs);
   const toast = useToast();
 
   const handleClick = () => {
@@ -17,7 +15,7 @@ const BookmarkButton = ({ articleID, type, mb }) => {
     } else if (type === "remove") {
       dispatch(removeBookmark(articleID));
     }
-    if (type != "view") {
+    if (type !== "view") {
       toast({
         description: `Article ${type === "add" ? "added" : "removed"} in Bookmarks`,
         status: `${type === "add" ? "success" : "error"}`,

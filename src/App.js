@@ -1,15 +1,9 @@
 import { ChakraProvider, Container } from "@chakra-ui/react";
-import {
-  BrowserRouter as Router,
-  Route,
-  Switch,
-  Redirect
-} from "react-router-dom";
+import { BrowserRouter as Router, Redirect, Route, Switch } from "react-router-dom";
 import Navigation from "./components/navigation";
 import Home from "./features/home/home";
 import Article from "./features/article/article";
 import SearchedArticles from "./features/search/searchedArticles";
-import Footer from "./components/footer";
 import Bookmarks from "./features/bookmarks/bookmarks";
 
 function App() {
@@ -26,8 +20,8 @@ function App() {
               <Route path="/bookmarks" exact>
                 <Bookmarks/>
               </Route> <Route path="/search" exact>
-                <SearchedArticles/>
-              </Route>
+              <SearchedArticles/>
+            </Route>
               <Route path="/:id">
                 <Article/>
               </Route>

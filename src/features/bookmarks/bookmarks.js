@@ -20,14 +20,14 @@ const Bookmarks = () => {
 
   useEffect(() => {
     let articles = localStorage.getItem("articleIDs");
-    if (articles != null && articles != "undefined") {
+    if (articles !== null && articles !== "undefined") {
       articles = articles.split(",");
     } else {
       articles = [];
     }
     dispatch(setBookmarks(articles));
     dispatch(fetchBookmarkArticles());
-  }, []);
+  }, [dispatch]);
 
   const handleOrder = () => {
     dispatch(reverseArticles());

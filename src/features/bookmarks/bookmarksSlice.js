@@ -60,9 +60,6 @@ export const bookmarksSlice = createSlice({
     }, [fetchBookmarkArticles.rejected]: (state, action) => {
       state.status = "failed";
       state.error = action.payload;
-    },
-    ["bookmarks/addBookmark"]: (state) => {
-      console.log("addBookmark extrareducers");
     }
   }
 });

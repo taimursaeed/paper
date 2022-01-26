@@ -10,7 +10,6 @@ export const fetchSearchedArticles = createAsyncThunk(
       dispatch(clearArticles());
       dispatch(setSearchTerm(searchVal));
     }
-    console.log("Searching for: ", searchVal);
     const response = await axios
       .get(
         `https://content.guardianapis.com/search?show-fields=thumbnail&q=${searchVal}&api-key=test&page-size=10&page=${state.search.pageIndex}`
