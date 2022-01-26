@@ -8,8 +8,8 @@ export const fetchArticle = createAsyncThunk(
       .get(
         `https://content.guardianapis.com/${articleID}?api-key=test&show-fields=body,trailText,thumbnail`
       )
-      .then(function (response) {
-        return response.data.response;
+      .then(function (res) {
+        return res.data.response;
       })
       .catch(function (error) {
         console.log(error);
