@@ -45,6 +45,9 @@ export default function SearchedArticles() {
     dispatch(reverseArticles());
   };
 
+  const RenderArticles = () => searchedArticles?.results?.length > 0 ?
+    <ArticleSection articles={searchedArticles.results}/> : <Text align="center">No article found</Text>;
+
   return (
     <>
       <Flex justifyContent="space-between">
@@ -56,11 +59,7 @@ export default function SearchedArticles() {
       </Flex>
       {status === "failed" ?
         <Text align="center">There was an issue fetching the articles. Please try again.</Text> : ""}
-      {status === "loading" && pageIndex === 1
-        ? <Loader/>
-        : searchedArticles?.results?.length > 0
-          ? <ArticleSection articles={searchedArticles.results}/>
-          : <Text align="center">No article found</Text>}
+      {status === "loading" && pageIndex === 1 ? <Loader/> : <RenderArticles/>}
       {isBottom && status === "loading" ? <Loader/> : ""}
     </>
   );
