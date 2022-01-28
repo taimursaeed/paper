@@ -48,7 +48,7 @@ const Bookmarks = () => {
         <Text textAlign="center">There was an issue fetching the articles. Please try again.</Text> : ""}
       {status === "loading"
         ? <Loader/>
-        : RenderBookmarks}
+        : <RenderBookmarks/>}
 
     </>);
 };
