@@ -14,11 +14,9 @@ export default function Article() {
   const location = useLocation();
 
   useEffect(() => {
-    console.log("Article JS useEffect called");
     const trimmedLocation = location.pathname.replace("/", "");
     dispatch(fetchArticle(trimmedLocation));
     return () => {
-      console.log("Article JS cleanup");
       dispatch(setStatus("idle"));
     };
   }, [location.pathname, dispatch]);
