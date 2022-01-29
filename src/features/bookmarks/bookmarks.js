@@ -13,6 +13,11 @@ import ArticleSection from "../../components/articleSection";
 import ArticleSorter from "../../components/articleSorter";
 import ArticleSectionSkeleton from "../../components/articleSectionSkeleton";
 
+const MESSAGES = {
+  NO_ARTICLES: "There are no bookmarked articles",
+  FETCH_ERROR: "There was an issue fetching the articles. Please try again."
+};
+
 const Bookmarks = () => {
   const dispatch = useDispatch();
   const status = useSelector(selectStatus);
@@ -35,7 +40,7 @@ const Bookmarks = () => {
   };
   if (status === "failed") console.log(error);
   const RenderBookmarks = () => bookmarkArticles?.length > 0 ? <ArticleSection articles={bookmarkArticles}/> :
-    <Text textAlign="center">There are no bookmarked articles</Text>;
+    <Text textAlign="center">{MESSAGES.NO_ARTICLES}</Text>;
 
   return (
     <>
@@ -46,7 +51,7 @@ const Bookmarks = () => {
         </Flex>
       </Flex>
       {status === "failed" ?
-        <Text textAlign="center">There was an issue fetching the articles. Please try again.</Text> : ""}
+        <Text textAlign="center">{MESSAGES.FETCH_ERROR}</Text> : ""}
       {status === "loading"
         ? <ArticleSectionSkeleton/>
         : <RenderBookmarks/>}

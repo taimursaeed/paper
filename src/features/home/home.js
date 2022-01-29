@@ -7,6 +7,9 @@ import BookmarkButton from "../../components/bookmarkButton";
 import ArticleSorter from "../../components/articleSorter";
 import HomeSkeleton from "./homeSkeleton";
 
+const MESSAGES = {
+  FETCH_ERROR: "There was an issue fetching the articles. Please try again."
+};
 export default function Home() {
   const articles = useSelector(selectAllArticles);
   const status = useSelector(selectStatus);
@@ -31,7 +34,8 @@ export default function Home() {
       </Box>;
     });
   } else if (status === "failed") {
-    content = { error };
+    console.log(error);
+    content = <Text>{MESSAGES.FETCH_ERROR}</Text>;
   }
 
   const handleOrder = () => {

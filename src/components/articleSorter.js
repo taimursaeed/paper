@@ -3,7 +3,6 @@ import { Select } from "@chakra-ui/react";
 
 const ArticleSorter = ({ onChange }) => {
   const handleOrder = () => {
-    console.log("Should have sorted articles");
     if (typeof onChange === "function") onChange();
   };
   return (

@@ -17,6 +17,11 @@ import BookmarkButton from "../../components/bookmarkButton";
 import ArticleSorter from "../../components/articleSorter";
 import ArticleSectionSkeleton from "../../components/articleSectionSkeleton";
 
+const MESSAGES = {
+  NO_ARTICLES: "No article found",
+  FETCH_ERROR: "There was an issue fetching the articles. Please try again."
+};
+
 export default function SearchedArticles() {
   const { search } = useLocation();
   const query = new URLSearchParams(search);
@@ -47,7 +52,7 @@ export default function SearchedArticles() {
   };
 
   const RenderArticles = () => searchedArticles?.results?.length > 0 ?
-    <ArticleSection articles={searchedArticles.results}/> : <Text align="center">No article found</Text>;
+    <ArticleSection articles={searchedArticles.results}/> : <Text align="center">{MESSAGES.NO_ARTICLES}</Text>;
 
   return (
     <>
@@ -59,7 +64,7 @@ export default function SearchedArticles() {
         </Flex>
       </Flex>
       {status === "failed" ?
-        <Text align="center">There was an issue fetching the articles. Please try again.</Text> : ""}
+        <Text align="center">{MESSAGES.FETCH_ERROR}</Text> : ""}
       {status === "loading" && pageIndex === 1 ? <ArticleSectionSkeleton/> : <RenderArticles/>}
       {isBottom && status === "loading" ? <Loader/> : ""}
     </>
