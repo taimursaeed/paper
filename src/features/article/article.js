@@ -1,9 +1,9 @@
-import { Flex, Spinner } from "@chakra-ui/react";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
 import { fetchArticle, selectArticle, selectError, selectStatus, setStatus } from "./articleSlice";
 import ArticleView from "./articleView";
+import ArticleSkeleton from "./articleSkeleton";
 
 export default function Article() {
   const article = useSelector(selectArticle);
@@ -20,20 +20,10 @@ export default function Article() {
       dispatch(setStatus("idle"));
     };
   }, [location.pathname, dispatch]);
-  let content;
 
+  let content;
   if (status === "loading") {
-    content = (
-      <Flex justifyContent="center" my="8">
-        <Spinner
-          thickness="4px"
-          speed="1s"
-          emptyColor="gray.200"
-          color="blue.500"
-          size="xl"
-        />
-      </Flex>
-    );
+    content = <ArticleSkeleton/>;
   } else if (status === "succeeded") {
     content = <ArticleView {...article} />;
   } else if (status === "failed") {

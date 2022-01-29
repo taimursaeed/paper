@@ -22,7 +22,7 @@ export default function ArticleView(props) {
           {props.fields.trailText}
         </Heading>
         <Divider my="5"/>
-        <Text dangerouslySetInnerHTML={{ __html: props.fields.body }}></Text>
+        <Text dangerouslySetInnerHTML={{ __html: props.fields.body }}/>
       </Box>
       <Box flex="1" alignSelf="start" pl="8">
         <Image
