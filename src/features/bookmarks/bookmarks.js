@@ -6,11 +6,12 @@ import {
   reverseArticles,
   selectBookmarkArticles,
   selectError,
-  selectStatus, setBookmarks
+  selectStatus,
+  setBookmarks
 } from "./bookmarksSlice";
-import Loader from "../../components/loader";
 import ArticleSection from "../home/articleSection";
 import ArticleSorter from "../../components/articleSorter";
+import BookmarkSkeleton from "./bookmarkSkeleton";
 
 const Bookmarks = () => {
   const dispatch = useDispatch();
@@ -47,7 +48,7 @@ const Bookmarks = () => {
       {status === "failed" ?
         <Text textAlign="center">There was an issue fetching the articles. Please try again.</Text> : ""}
       {status === "loading"
-        ? <Loader/>
+        ? <BookmarkSkeleton/>
         : <RenderBookmarks/>}
 
     </>);
