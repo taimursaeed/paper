@@ -14,7 +14,7 @@ export default function Article() {
   const location = useLocation();
 
   useEffect(() => {
-    const trimmedLocation = location.pathname.replace("/", "");
+    const trimmedLocation = location.pathname.replace("/article", "");
     dispatch(fetchArticle(trimmedLocation));
     return () => {
       dispatch(setStatus("idle"));

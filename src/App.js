@@ -19,16 +19,16 @@ function App() {
               </Route>
               <Route path="/bookmarks" exact>
                 <Bookmarks/>
-              </Route> <Route path="/search" exact>
-              <SearchedArticles/>
-            </Route>
-              <Route path="/:id">
+              </Route>
+              <Route path="/search" exact>
+                <SearchedArticles/>
+              </Route>
+              <Route path="/article/:id">
                 <Article/>
               </Route>
               <Redirect to="/"/>
             </Switch>
           </Container>
-          {/* <Footer /> */}
         </div>
       </Router>
     </ChakraProvider>

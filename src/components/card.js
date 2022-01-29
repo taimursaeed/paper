@@ -19,7 +19,7 @@ export default function Card(props) {
       height="100%"
     >
       <LinkBox as="article" width={props.size} height="100%">
-        <LinkOverlay as={Link} to={`/${props.id}`}>
+        <LinkOverlay as={Link} to={`article/${props.id}`}>
           <Image
             boxSize="100%"
             src={
