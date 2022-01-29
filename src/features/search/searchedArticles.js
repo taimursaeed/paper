@@ -15,6 +15,7 @@ import { useScrollPosition } from "@n8tb1t/use-scroll-position";
 import Loader from "../../components/loader";
 import BookmarkButton from "../../components/bookmarkButton";
 import ArticleSorter from "../../components/articleSorter";
+import ArticleSectionSkeleton from "../../components/articleSectionSkeleton";
 
 export default function SearchedArticles() {
   const { search } = useLocation();
@@ -59,7 +60,7 @@ export default function SearchedArticles() {
       </Flex>
       {status === "failed" ?
         <Text align="center">There was an issue fetching the articles. Please try again.</Text> : ""}
-      {status === "loading" && pageIndex === 1 ? <Loader/> : <RenderArticles/>}
+      {status === "loading" && pageIndex === 1 ? <ArticleSectionSkeleton/> : <RenderArticles/>}
       {isBottom && status === "loading" ? <Loader/> : ""}
     </>
   );
