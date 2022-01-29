@@ -9,9 +9,9 @@ import {
   selectStatus,
   setBookmarks
 } from "./bookmarksSlice";
-import ArticleSection from "../home/articleSection";
+import ArticleSection from "../../components/articleSection";
 import ArticleSorter from "../../components/articleSorter";
-import BookmarkSkeleton from "./bookmarkSkeleton";
+import ArticleSectionSkeleton from "../../components/articleSectionSkeleton";
 
 const Bookmarks = () => {
   const dispatch = useDispatch();
@@ -48,7 +48,7 @@ const Bookmarks = () => {
       {status === "failed" ?
         <Text textAlign="center">There was an issue fetching the articles. Please try again.</Text> : ""}
       {status === "loading"
-        ? <BookmarkSkeleton/>
+        ? <ArticleSectionSkeleton/>
         : <RenderBookmarks/>}
 
     </>);

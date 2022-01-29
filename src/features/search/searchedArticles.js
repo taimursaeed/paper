@@ -10,7 +10,7 @@ import {
   selectStatus
 } from "./searchSlice";
 import { useLocation } from "react-router-dom";
-import ArticleSection from "../home/articleSection";
+import ArticleSection from "../../components/articleSection";
 import { useScrollPosition } from "@n8tb1t/use-scroll-position";
 import Loader from "../../components/loader";
 import BookmarkButton from "../../components/bookmarkButton";

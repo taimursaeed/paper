@@ -1,7 +1,7 @@
 import React from "react";
 import { Grid, Skeleton } from "@chakra-ui/react";
 
-function BookmarkSkeleton() {
+function ArticleSectionSkeleton() {
   return (
     <Grid templateColumns="repeat(3, 1fr)" gap="6" mb="12">
       <Skeleton height="350px"/>
@@ -11,4 +11,4 @@ function BookmarkSkeleton() {
   );
 }
 
-export default BookmarkSkeleton;
+export default ArticleSectionSkeleton;

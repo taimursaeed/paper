@@ -9,7 +9,7 @@ function ArticleSkeleton() {
         <Skeleton height="20px" mt="4" spacing="4"/>
         <Skeleton height="20px" mt="4" spacing="4"/>
         <SkeletonText mt="4" noOfLines={2} spacing="4"/>
-        <SkeletonText mt="8" noOfLines={10} spacing="4"/>
+        <SkeletonText mt="8" noOfLines={30} spacing="4"/>
       </Box>
       <Box flex="1" alignSelf="start" pl="8">
         <Skeleton height="200px"/>

@@ -1,10 +1,11 @@
-import { Box, Flex, Heading, Spinner } from "@chakra-ui/react";
+import { Box, Flex, Heading } from "@chakra-ui/react";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import ArticleSection from "./articleSection";
+import ArticleSection from "../../components/articleSection";
 import { fetchSections, reverseArticles, selectAllArticles, selectError, selectStatus, setStatus } from "./homeSlice";
 import BookmarkButton from "../../components/bookmarkButton";
 import ArticleSorter from "../../components/articleSorter";
+import HomeSkeleton from "./homeSkeleton";
 
 export default function Home() {
   const articles = useSelector(selectAllArticles);
@@ -21,20 +22,10 @@ export default function Home() {
 
   let content;
   if (status === "loading") {
-    content = (
-      <Flex justifyContent="center" my="8">
-        <Spinner
-          thickness="4px"
-          speed="1s"
-          emptyColor="gray.200"
-          color="blue.500"
-          size="xl"
-        />
-      </Flex>
-    );
+    content = <HomeSkeleton/>;
   } else if (status === "succeeded") {
     content = articles.map((section, id) => {
-      return <Box key={id} >
+      return <Box key={id}>
         <Heading mb="6" just="left">{section.articles.section.webTitle}</Heading>
         <ArticleSection articles={section.articles.results}/>
       </Box>;

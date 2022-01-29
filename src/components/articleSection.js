@@ -1,5 +1,5 @@
 import { Grid, GridItem } from "@chakra-ui/react";
-import Card from "../../components/card";
+import Card from "./card";
 
 export default function ArticleSection({ articles }) {
   return (
