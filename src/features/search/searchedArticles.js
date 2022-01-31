@@ -30,7 +30,7 @@ export default function SearchedArticles() {
 
   const searchedArticles = useSelector(selectSearchedArticles);
   const status = useSelector(selectStatus);
-  const pageIndex = useSelector(selectPageIndex);
+  const currentPage = useSelector(selectPageIndex);
 
   const [isBottom, setIsBottom] = useState(false);
   useScrollPosition(({ prevPos, currPos }) => {
@@ -41,7 +41,7 @@ export default function SearchedArticles() {
     } else {
       setIsBottom(false);
     }
-  }, null, null, null, 100, null);
+  }, null, null, null, 200, null);
 
   useEffect(() => {
     dispatch(fetchSearchedArticles(searchTerm));
@@ -51,8 +51,21 @@ export default function SearchedArticles() {
     dispatch(reverseArticles());
   };
 
-  const RenderArticles = () => searchedArticles?.results?.length > 0 ?
-    <ArticleSection articles={searchedArticles.results}/> : <Text align="center">{MESSAGES.NO_ARTICLES}</Text>;
+  const OnError = () => {
+    return (status === "failed") ? <Text align="center">{MESSAGES.FETCH_ERROR}</Text> : false;
+  };
+
+  let articleCards;
+  if (status === "loading" && currentPage === 1) articleCards = <ArticleSectionSkeleton/>;
+  else {
+    articleCards = searchedArticles?.results?.length > 0 ?
+      <ArticleSection articles={searchedArticles.results}/> : <Text align="center">{MESSAGES.NO_ARTICLES}</Text>;
+  }
+
+  const InfiniteScrollSpinner = () => {
+    return (isBottom && status === "loading") ? <Loader/> : false;
+  };
+
 
   return (
     <>
@@ -63,10 +76,9 @@ export default function SearchedArticles() {
           <ArticleSorter onChange={handleOrder}/>
         </Flex>
       </Flex>
-      {status === "failed" ?
-        <Text align="center">{MESSAGES.FETCH_ERROR}</Text> : ""}
-      {status === "loading" && pageIndex === 1 ? <ArticleSectionSkeleton/> : <RenderArticles/>}
-      {isBottom && status === "loading" ? <Loader/> : ""}
+      <OnError/>
+      {articleCards}
+      <InfiniteScrollSpinner/>
     </>
   );
 }
