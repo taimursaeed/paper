@@ -39,8 +39,14 @@ const Bookmarks = () => {
     dispatch(reverseArticles());
   };
   if (status === "failed") console.log(error);
-  const RenderBookmarks = () => bookmarkArticles?.length > 0 ? <ArticleSection articles={bookmarkArticles}/> :
-    <Text textAlign="center">{MESSAGES.NO_ARTICLES}</Text>;
+
+  let articleCards;
+  if (status === "succeeded") {
+    articleCards = bookmarkArticles?.length > 0 ?
+      <ArticleSection articles={bookmarkArticles}/> :
+      <Text textAlign="center">{MESSAGES.NO_ARTICLES}</Text>;
+  }
+
 
   return (
     <>
@@ -54,8 +60,7 @@ const Bookmarks = () => {
         <Text textAlign="center">{MESSAGES.FETCH_ERROR}</Text> : ""}
       {status === "loading"
         ? <ArticleSectionSkeleton/>
-        : <RenderBookmarks/>}
-
+        : articleCards}
     </>);
 };
 
