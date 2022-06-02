@@ -16,6 +16,7 @@ import Loader from "../../components/loader";
 import BookmarkButton from "../../components/bookmarkButton";
 import ArticleSorter from "../../components/articleSorter";
 import ArticleSectionSkeleton from "../../components/articleSectionSkeleton";
+import { selectUser } from "../auth/authSlice";
 
 const MESSAGES = {
   NO_ARTICLES: "No article found",
@@ -27,6 +28,7 @@ export default function SearchedArticles() {
   const query = new URLSearchParams(search);
   const searchTerm = query.get("term");
   const dispatch = useDispatch();
+  const user = useSelector(selectUser);
 
   const searchedArticles = useSelector(selectSearchedArticles);
   const status = useSelector(selectStatus);
@@ -72,7 +74,7 @@ export default function SearchedArticles() {
       <Flex justifyContent="space-between">
         <Heading mb="6" just="left">{searchedArticles.section.webTitle}</Heading>
         <Flex justifyContent="flex-end">
-          <BookmarkButton type="view"/>
+          {user && <BookmarkButton type="view"/>}
           <ArticleSorter onChange={handleOrder}/>
         </Flex>
       </Flex>

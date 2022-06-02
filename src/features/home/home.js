@@ -1,4 +1,4 @@
-import { Box, Flex, Heading,Text } from "@chakra-ui/react";
+import { Box, Flex, Heading, Text } from "@chakra-ui/react";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import ArticleSection from "../../components/articleSection";
@@ -6,6 +6,7 @@ import { fetchSections, reverseArticles, selectAllArticles, selectError, selectS
 import BookmarkButton from "../../components/bookmarkButton";
 import ArticleSorter from "../../components/articleSorter";
 import HomeSkeleton from "./homeSkeleton";
+import { selectUser } from "../auth/authSlice";
 
 const MESSAGES = {
   FETCH_ERROR: "There was an issue fetching the articles. Please try again."
@@ -14,6 +15,7 @@ export default function Home() {
   const articles = useSelector(selectAllArticles);
   const status = useSelector(selectStatus);
   const error = useSelector(selectError);
+  const user = useSelector(selectUser);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -45,7 +47,7 @@ export default function Home() {
   return (
     <>
       <Flex justifyContent="flex-end" mb="-12">
-        <BookmarkButton type="view"/>
+        {user && <BookmarkButton type="view"/>}
         <ArticleSorter onChange={handleOrder}/>
       </Flex>
       {content}

@@ -25,6 +25,8 @@ export const localStorageMiddleware = store => next => action => {
   next(action);
   if (bookmarksSlice.actions.addBookmark.match(action) || bookmarksSlice.actions.removeBookmark.match(action)) {
     localStorage.setItem("articleIDs", selectBookmarkArticlesIDs(store.getState()));
+  } else if (bookmarksSlice.actions.resetBookmarks.match(action)) {
+    localStorage.removeItem("articleIDs");
   }
 };
 
@@ -37,6 +39,10 @@ export const bookmarksSlice = createSlice({
     error: null
   },
   reducers: {
+    resetBookmarks: (state) => {
+      state.articleIDs = [];
+      state.articles = [];
+    },
     setBookmarks: (state, action) => {
       state.articleIDs = action.payload;
     },
@@ -67,6 +73,13 @@ export const selectBookmarkArticlesIDs = (state) => state.bookmarks.articleIDs;
 export const selectBookmarkArticles = (state) => state.bookmarks.articles;
 export const selectStatus = (state) => state.bookmarks.status;
 export const selectError = (state) => state.bookmarks.error;
-export const { setStatus, addBookmark, removeBookmark, reverseArticles, setBookmarks } = bookmarksSlice.actions;
+export const {
+  setStatus,
+  addBookmark,
+  removeBookmark,
+  reverseArticles,
+  setBookmarks,
+  resetBookmarks
+} = bookmarksSlice.actions;
 
 export default bookmarksSlice.reducer;

@@ -3,8 +3,10 @@ import BookmarkButton from "../../components/bookmarkButton";
 import React from "react";
 import { useSelector } from "react-redux";
 import { selectBookmarkArticlesIDs } from "../bookmarks/bookmarksSlice";
+import { selectUser } from "../auth/authSlice";
 
 export default function ArticleView(props) {
+  const user = useSelector(selectUser);
   const articleID = props.id;
   const bookmarkArticleIDs = useSelector(selectBookmarkArticlesIDs);
   let bookmarkType = "add";
@@ -14,7 +16,7 @@ export default function ArticleView(props) {
   return (
     <Flex>
       <Box flex="2">
-        <BookmarkButton articleID={articleID} type={bookmarkType} mb="4"/>
+        {user && <BookmarkButton articleID={articleID} type={bookmarkType} mb="4"/>}
         <Heading as="h1" mb="4">
           {props.webTitle}
         </Heading>
