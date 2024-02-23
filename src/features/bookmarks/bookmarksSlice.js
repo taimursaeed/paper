@@ -1,5 +1,4 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import axios from "axios";
 
 export const fetchBookmarkArticles = createAsyncThunk("articles/fetchBookmarkArticles", async (_, { getState }) => {
   let response;

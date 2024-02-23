@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import axios from "axios";
+
 export const fetchSections = createAsyncThunk(
   "articles/fetchSections",
   async (sections) => {
