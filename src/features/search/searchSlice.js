@@ -1,5 +1,4 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import axios from "axios";
 
 export const fetchSearchedArticles = createAsyncThunk(
   "articles/search",
@@ -10,13 +9,12 @@ export const fetchSearchedArticles = createAsyncThunk(
       dispatch(clearArticles());
       dispatch(setSearchTerm(searchVal));
     }
-    const response = await axios
-      .get(
+
+      const response = await fetch(
         `https://content.guardianapis.com/search?show-fields=thumbnail&q=${searchVal}&api-key=test&page-size=10&page=${state.search.pageIndex}`
       )
-      .then(function(res) {
-        return res.data.response;
-      })
+      .then(response => response.json())
+      .then(data => data.response)
       .catch(function(error) {
         console.log(error);
       });

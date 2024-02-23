@@ -5,21 +5,20 @@ export const fetchSections = createAsyncThunk(
   async (sections) => {
     let response;
     const calls = sections.map((section) =>
-      axios.get(
+      fetch(
         `https://content.guardianapis.com/${section}?api-key=test&show-fields=trailText,thumbnail&order-by=newest&page-size=${
           section === "news" ? 8 : 3
         }`
-      )
+      ).then((response) => response.json())
     );
 
     //concurrent calls
-    await axios
-      .all(calls)
+    await Promise.all(calls)
       .then((res) => {
         response = res.map((r) => {
           return {
-            section: r.data.response.section.webTitle,
-            articles: r.data.response,
+            section: r.response.section.webTitle,
+            articles: r.response,
           };
         });
       })

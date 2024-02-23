@@ -4,17 +4,21 @@ import axios from "axios";
 export const fetchBookmarkArticles = createAsyncThunk("articles/fetchBookmarkArticles", async (_, { getState }) => {
   let response;
   let articleIDs = selectBookmarkArticlesIDs(getState());
-  const calls = articleIDs.map((id) => axios.get(`https://content.guardianapis.com/${id}?show-fields=trailText,thumbnail&api-key=test`));
+    
+  const calls = articleIDs.map((id) =>
+    fetch(
+      `https://content.guardianapis.com/${id}?show-fields=trailText,thumbnail&api-key=test`
+    ).then((response) => response.json())
+  );
 
   //concurrent calls
-  await axios
-    .all(calls)
+  await Promise.all(calls)
     .then((res) => {
       response = res.map((r) => {
-        return r.data.response.content;
+        return r.response.content;
       });
     })
-    .catch(function(error) {
+    .catch(function (error) {
       console.log(error);
     });
 

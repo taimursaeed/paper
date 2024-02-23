@@ -4,13 +4,11 @@ import axios from "axios";
 export const fetchArticle = createAsyncThunk(
   "article/fetchArticle",
   async (articleID) => {
-    const response = await axios
-      .get(
+      const response = await fetch(
         `https://content.guardianapis.com/${articleID}?api-key=test&show-fields=body,trailText,thumbnail`
       )
-      .then(function (res) {
-        return res.data.response;
-      })
+      .then(response => response.json())
+      .then(data => data.response)
       .catch(function (error) {
         console.log(error);
       });
