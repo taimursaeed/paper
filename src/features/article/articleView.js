@@ -19,16 +19,16 @@ export default function ArticleView(props) {
           {props.webTitle}
         </Heading>
         <Heading as="h2" size="md">
-          {props.fields.trailText}
+          {props.fields?.trailText}
         </Heading>
         <Divider my="5"/>
-        <Text dangerouslySetInnerHTML={{ __html: props.fields.body }}/>
+        <Text dangerouslySetInnerHTML={{ __html: props.fields?.body }}/>
       </Box>
       <Box flex="1" alignSelf="start" pl="8">
         <Image
           boxSize="100%"
           src={
-            props.fields.thumbnail ||
+            props.fields?.thumbnail ||
             "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/450px-No_image_available.svg.png"
           }
           alt={props.webTitle}

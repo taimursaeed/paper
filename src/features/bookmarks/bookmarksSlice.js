@@ -54,17 +54,21 @@ export const bookmarksSlice = createSlice({
       state.articles = [...state.articles].reverse();
     }
   },
-  extraReducers: {
-    [fetchBookmarkArticles.pending]: (state) => {
-      state.status = "loading";
-    }, [fetchBookmarkArticles.fulfilled]: (state, action) => {
-      state.status = "succeeded";
-      state.articles = action.payload;
-    }, [fetchBookmarkArticles.rejected]: (state, action) => {
-      state.status = "failed";
-      state.error = action.payload;
-    }
-  }
+  extraReducers: (builder) => {
+    builder
+      .addCase(fetchBookmarkArticles.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(fetchBookmarkArticles.fulfilled, (state, action) => {
+        state.status = "succeeded";
+        state.articles = action.payload;
+      })
+      .addCase(fetchBookmarkArticles.rejected, (state, action) => {
+        state.status = "failed";
+        state.error = action.payload;
+      });
+  },
+
 });
 export const selectBookmarkArticlesIDs = (state) => state.bookmarks.articleIDs;
 export const selectBookmarkArticles = (state) => state.bookmarks.articles;

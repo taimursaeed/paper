@@ -1,34 +1,24 @@
-import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React from "react";
 import { useLocation } from "react-router-dom";
-import { fetchArticle, selectArticle, selectError, selectStatus, setStatus } from "./articleSlice";
 import ArticleView from "./articleView";
 import ArticleSkeleton from "./articleSkeleton";
+import { useGetArticleQuery } from "./articleSlice";
 
 export default function Article() {
-  const article = useSelector(selectArticle);
-  const status = useSelector(selectStatus);
-  const error = useSelector(selectError);
-  const dispatch = useDispatch();
-
   const location = useLocation();
+  const trimmedLocation = location.pathname.replace("/article", "");
+  const {
+    data: article,
+    isLoading,
+    isError,
+  } = useGetArticleQuery(trimmedLocation);
 
-  useEffect(() => {
-    const trimmedLocation = location.pathname.replace("/article", "");
-    dispatch(fetchArticle(trimmedLocation));
-    return () => {
-      dispatch(setStatus("idle"));
-    };
-  }, [location.pathname, dispatch]);
-
-  let content;
-  if (status === "loading") {
-    content = <ArticleSkeleton/>;
-  } else if (status === "succeeded") {
-    content = <ArticleView {...article} />;
-  } else if (status === "failed") {
-    content = { error };
+  if (isLoading) {
+    return <ArticleSkeleton />;
   }
 
-  return <>{content}</>;
+  if (isError) {
+    return <div>Error!</div>;
+  }
+  return <ArticleView {...article} />;
 }

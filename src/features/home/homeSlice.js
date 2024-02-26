@@ -49,18 +49,19 @@ export const homeSlice = createSlice({
       state.articles = articles;
     },
   },
-  extraReducers: {
-    [fetchSections.pending]: (state) => {
-      state.status = "loading";
-    },
-    [fetchSections.fulfilled]: (state, action) => {
-      state.status = "succeeded";
-      state.articles = action.payload;
-    },
-    [fetchSections.rejected]: (state, action) => {
-      state.status = "failed";
-      state.error = action.payload;
-    },
+  extraReducers: (builder) => {
+    builder
+      .addCase(fetchSections.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(fetchSections.fulfilled, (state, action) => {
+        state.status = "succeeded";
+        state.articles = action.payload;
+      })
+      .addCase(fetchSections.rejected, (state, action) => {
+        state.status = "failed";
+        state.error = action.payload;
+      });
   },
 });
 export const selectAllArticles = (state) => state.home.articles;

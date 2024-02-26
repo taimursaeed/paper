@@ -48,19 +48,20 @@ export const searchSlice = createSlice({
       state.articles.results = [...state.articles.results].reverse();
     }
   },
-  extraReducers: {
-    [fetchSearchedArticles.pending]: (state) => {
-      state.status = "loading";
-    },
-    [fetchSearchedArticles.fulfilled]: (state, action) => {
-      state.status = "succeeded";
-      state.articles.results = state.articles.results.concat(action.payload);
-    },
-    [fetchSearchedArticles.rejected]: (state, action) => {
-      state.status = "failed";
-      state.error = action.payload;
-    }
-  }
+  extraReducers: (builder) => {
+    builder
+      .addCase(fetchSearchedArticles.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(fetchSearchedArticles.fulfilled, (state, action) => {
+        state.status = "succeeded";
+        state.articles.results = state.articles.results.concat(action.payload);
+      })
+      .addCase(fetchSearchedArticles.rejected, (state, action) => {
+        state.status = "failed";
+        state.error = action.payload;
+      });
+  },
 });
 
 export const selectStatus = (state) => state.search.status;
