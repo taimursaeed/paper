@@ -1,54 +1,53 @@
-import { Box, Flex, Heading,Text } from "@chakra-ui/react";
-import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { Box, Flex, Heading, Text } from "@chakra-ui/react";
+import React, { useEffect, useState } from "react";
 import ArticleSection from "../../components/articleSection";
-import { fetchSections, reverseArticles, selectAllArticles, selectError, selectStatus, setStatus } from "./homeSlice";
 import BookmarkButton from "../../components/bookmarkButton";
 import ArticleSorter from "../../components/articleSorter";
 import HomeSkeleton from "./homeSkeleton";
+import { useGetHomeArticlesQuery } from "./homeSlice";
 
 const MESSAGES = {
-  FETCH_ERROR: "There was an issue fetching the articles. Please try again."
+  FETCH_ERROR: "There was an issue fetching the articles. Please try again.",
 };
-export default function Home() {
-  const articles = useSelector(selectAllArticles);
-  const status = useSelector(selectStatus);
-  const error = useSelector(selectError);
-  const dispatch = useDispatch();
 
+const RenderSection = ({ sectionName, isNewest }) => {
+  const { data, isLoading, isError } = useGetHomeArticlesQuery(sectionName);
+  const [articles, setArticles] = useState(data?.results);
   useEffect(() => {
-    dispatch(fetchSections(["news", "sport", "culture", "lifeandstyle"]));
-    return () => {
-      dispatch(setStatus("idle"));
-    };
-  }, [dispatch]);
+    setArticles(isNewest ? data?.results : [...data?.results].reverse());
+  }, [data, isNewest]);
 
-  let content;
-  if (status === "loading") {
-    content = <HomeSkeleton/>;
-  } else if (status === "succeeded") {
-    content = articles.map((section, id) => {
-      return <Box key={id}>
-        <Heading mb="6" just="left">{section.articles.section.webTitle}</Heading>
-        <ArticleSection articles={section.articles.results}/>
-      </Box>;
-    });
-  } else if (status === "failed") {
-    console.log(error);
-    content = <Text>{MESSAGES.FETCH_ERROR}</Text>;
-  }
+  if (isError) return <Text>{MESSAGES.FETCH_ERROR}</Text>;
+  if (isLoading && typeof data === "undefined") return <HomeSkeleton />;
+  return (
+    <>
+      {articles && (
+        <Box key={data.section.id}>
+          <Heading mb="6" just="left">
+            {data.section.webTitle}
+          </Heading>
+          <ArticleSection articles={articles} />
+        </Box>
+      )}
+    </>
+  );
+};
 
-  const handleOrder = () => {
-    dispatch(reverseArticles());
-  };
+export default function Home() {
+  const [isNewest, setIsNewest] = useState(true);
+  const sections = ["news", "sport", "culture", "lifeandstyle"];
+  const reverseOrder = () =>
+    setIsNewest((prevState) => (prevState = !prevState));
 
   return (
     <>
       <Flex justifyContent="flex-end" mb="-12">
-        <BookmarkButton type="view"/>
-        <ArticleSorter onChange={handleOrder}/>
+        <BookmarkButton type="view" />
+        <ArticleSorter onChange={reverseOrder} />
       </Flex>
-      {content}
+      {sections.map((section, id) => (
+        <RenderSection key={id} sectionName={section} isNewest={isNewest} />
+      ))}
     </>
   );
 }
