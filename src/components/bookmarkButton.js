@@ -18,7 +18,7 @@ const BookmarkButton = ({ articleID, type, mb }) => {
     if (type !== "view") {
       toast({
         description: `Article ${type === "add" ? "added" : "removed"} in Bookmarks`,
-        status: `${type === "add" ? "success" : "error"}`,
+        status: 'success',
         duration: 1000,
         position: "bottom-right"
       });
