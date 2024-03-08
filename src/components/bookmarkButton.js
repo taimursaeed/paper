@@ -1,32 +1,63 @@
 import { Button, Icon, useToast } from "@chakra-ui/react";
 import { useHistory } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { addBookmark, removeBookmark } from "../features/bookmarks/bookmarksSlice";
+import {
+  addBookmark,
+  removeBookmark,
+} from "../features/bookmarks/bookmarksSlice";
+import { doc, arrayRemove, updateDoc, arrayUnion } from "firebase/firestore";
+import db from "../service/firebase";
+import useGetUser from "../service/useGetUser";
+
+const addToFirebase = async (user, articleID) => {
+  const userRef = doc(db, "users", user.uid);
+  await updateDoc(userRef, { bookmarks: arrayUnion(articleID) });
+};
+
+const removeFromFirebase = async (user, articleID) => {
+  const userRef = doc(db, "users", user.uid);
+  await updateDoc(userRef, { bookmarks: arrayRemove(articleID) });
+};
 
 const BookmarkButton = ({ articleID, type, mb }) => {
   const history = useHistory();
   const dispatch = useDispatch();
   const toast = useToast();
-
+  const { user } = useGetUser();
   const handleClick = () => {
     if (type === "view") history.push(`/bookmarks`);
     else if (type === "add") {
       dispatch(addBookmark(articleID));
+      if (user) {
+        addToFirebase(user, articleID);
+      }
     } else if (type === "remove") {
       dispatch(removeBookmark(articleID));
+      if (user) {
+        removeFromFirebase(user, articleID);
+      }
     }
     if (type !== "view") {
       toast({
-        description: `Article ${type === "add" ? "added" : "removed"} in Bookmarks`,
-        status: 'success',
+        description: `Article ${
+          type === "add" ? "added" : "removed"
+        } in Bookmarks`,
+        status: "success",
         duration: 1000,
-        position: "bottom-right"
+        position: "bottom-right",
       });
     }
   };
 
   return (
-    <Button colorScheme={`${type === "remove" ? "red" : "blue"}`} pl="4" pr="4" mr="4" mb={mb} onClick={handleClick}>
+    <Button
+      colorScheme={`${type === "remove" ? "red" : "blue"}`}
+      pl="4"
+      pr="4"
+      mr="4"
+      mb={mb}
+      onClick={handleClick}
+    >
       <Icon width="1rem" mr="1">
         <svg
           fill="none"
@@ -42,7 +73,8 @@ const BookmarkButton = ({ articleID, type, mb }) => {
           ></path>
         </svg>
       </Icon>
-      {type[0].toUpperCase()}{type.slice(1)} Bookmarks
+      {type[0].toUpperCase()}
+      {type.slice(1)} Bookmarks
     </Button>
   );
 };

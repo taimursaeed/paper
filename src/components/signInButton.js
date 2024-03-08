@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Box, Button, useToast } from "@chakra-ui/react";
 import {
   browserLocalPersistence,
@@ -6,12 +6,12 @@ import {
   GoogleAuthProvider,
   setPersistence,
   signInWithPopup,
-  signOut,
-  onAuthStateChanged,
+  signOut
 } from "firebase/auth";
 import db from "./../service/firebase";
 import { doc, getDoc } from "firebase/firestore";
 import { useHistory } from "react-router-dom";
+import useGetUser from "../service/useGetUser";
 
 const GoogleLogo = () => {
   return (
@@ -49,11 +49,7 @@ function SignInButton() {
   const provider = new GoogleAuthProvider();
   const toast = useToast();
   const history = useHistory();
-
-  const [user, setUser] = useState(null);
-  useEffect(() => {
-    onAuthStateChanged(auth, (user) =>setUser(user))
-  }, [auth]);
+  const { user } = useGetUser();
 
   const checkRoute = () => {
     const currentLocation = history.location.pathname.toLowerCase();
@@ -93,17 +89,14 @@ function SignInButton() {
       .then(() => {
         return signInWithPopup(auth, provider)
           .then((result) => {
-            // (async () => {
-            //   const docRef = doc(db, "users", result.user.uid);
-            //   const docSnap = await getDoc(docRef);
-            //
-            //   if (docSnap.exists()) {
-            //     console.log("Document data:", docSnap.data());
-            //   } else {
-            //     // doc.data() will be undefined in this case
-            //     console.log("No such document!");
-            //   }
-            // })();
+            (async () => {
+              const docRef = doc(db, "users", result.user.uid);
+              const docSnap = await getDoc(docRef);
+
+              if (docSnap.exists()) {
+                console.log("User's data:", docSnap.data()); 
+              }
+            })();
 
             toast({
               description: "Logged in successfully.",
