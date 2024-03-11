@@ -6,12 +6,12 @@ import { useGetArticleQuery } from "./articleSlice";
 
 export default function Article() {
   const location = useLocation();
-  const trimmedLocation = location.pathname.replace("/article", "");
+  const articleID = location.pathname.replace("/article", "");
   const {
     data: article,
     isLoading,
     isError,
-  } = useGetArticleQuery(trimmedLocation);
+  } = useGetArticleQuery(articleID);
 
   if (isLoading) {
     return <ArticleSkeleton />;

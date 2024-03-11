@@ -4,14 +4,14 @@ import ArticleSection from "../../components/articleSection";
 import BookmarkButton from "../../components/bookmarkButton";
 import ArticleSorter from "../../components/articleSorter";
 import HomeSkeleton from "./homeSkeleton";
-import { useGetHomeArticlesQuery } from "./homeSlice";
+import { useGetSectionArticlesQuery } from "./homeSlice";
 
 const MESSAGES = {
   FETCH_ERROR: "There was an issue fetching the articles. Please try again.",
 };
 
 const RenderSection = ({ sectionName, isNewest }) => {
-  const { data, isLoading, isError } = useGetHomeArticlesQuery(sectionName);
+  const { data, isLoading, isError } = useGetSectionArticlesQuery(sectionName);
   const [articles, setArticles] = useState(data?.results);
   useEffect(() => {
     setArticles(isNewest ? data?.results : [...data?.results].reverse());

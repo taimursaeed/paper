@@ -1,6 +1,6 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { articleService } from "./features/article/articleSlice";
-import { homeService } from "./features/home/homeSlice";
+import {  sectionService } from "./features/home/homeSlice";
 import searchSlice from "./features/search/searchSlice";
 import bookmarksSlice, {
   localStorageMiddleware,
@@ -11,11 +11,11 @@ export default configureStore({
     search: searchSlice,
     bookmarks: bookmarksSlice,
     [articleService.reducerPath]: articleService.reducer,
-    [homeService.reducerPath]: homeService.reducer,
+    [sectionService.reducerPath]: sectionService.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware()
       .concat(articleService.middleware)
-      .concat(homeService.middleware)
+      .concat(sectionService.middleware)
       .concat(localStorageMiddleware),
 });

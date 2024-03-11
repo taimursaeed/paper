@@ -8,7 +8,7 @@ export const fetchBookmarkArticles = createAsyncThunk(
 
     const calls = articleIDs.map((id) =>
       fetch(
-        `https://content.guardianapis.com/${id}?show-fields=trailText,thumbnail&api-key=test`
+        `https://content.guardianapis.com/${id}?api-key=test&show-fields=body,trailText,thumbnail`
       ).then((response) => response.json())
     );
 
