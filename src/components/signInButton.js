@@ -13,7 +13,11 @@ import { doc, getDoc } from "firebase/firestore";
 import { useHistory } from "react-router-dom";
 import useGetUser from "../service/useGetUser";
 import { useDispatch } from "react-redux";
-import { clearBookmarks, selectBookmarkArticlesIDs, setBookmarks } from "../features/bookmarks/bookmarksSlice";
+import {
+  clearBookmarks,
+  setBookmarks,
+  fetchBookmarkArticles,
+} from "../features/bookmarks/bookmarksSlice";
 
 const GoogleLogo = () => {
   return (
@@ -98,6 +102,7 @@ function SignInButton() {
               if (docSnap.exists()) {
                 const userData = docSnap.data();
                 dispatch(setBookmarks(userData.bookmarks));
+                dispatch(fetchBookmarkArticles());
               }
             })();
 
