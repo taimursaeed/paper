@@ -1,7 +1,7 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
-export const sectionService = createApi({
-  reducerPath: "sectionService",
+export const apiService = createApi({
+  reducerPath: "apiService",
   baseQuery: fetchBaseQuery({ baseUrl: "https://content.guardianapis.com/" }),
   endpoints: (builder) => ({
     getSectionArticles: builder.query({
@@ -11,7 +11,12 @@ export const sectionService = createApi({
         }`,
       transformResponse: (response) => response.response,
     }),
+    getArticle: builder.query({
+      query: (articleID) =>
+        `${articleID}?api-key=test&show-fields=body,trailText,thumbnail`,
+      transformResponse: (response) => response.response.content,
+    }),
   }),
 });
 
-export const { useGetSectionArticlesQuery } = sectionService;
+export const { useGetArticleQuery, useGetSectionArticlesQuery } = apiService;

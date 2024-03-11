@@ -1,10 +1,9 @@
 import { Box, Flex, Heading, Text } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import ArticleSection from "../../components/articleSection";
-import BookmarkButton from "../../components/bookmarkButton";
 import ArticleSorter from "../../components/articleSorter";
 import HomeSkeleton from "./homeSkeleton";
-import { useGetSectionArticlesQuery } from "./homeSlice";
+import { useGetSectionArticlesQuery } from "./../../service/api";
 
 const MESSAGES = {
   FETCH_ERROR: "There was an issue fetching the articles. Please try again.",

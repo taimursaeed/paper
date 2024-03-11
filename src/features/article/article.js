@@ -2,7 +2,7 @@ import React from "react";
 import { useLocation } from "react-router-dom";
 import ArticleView from "./articleView";
 import ArticleSkeleton from "./articleSkeleton";
-import { useGetArticleQuery } from "./articleSlice";
+import { useGetArticleQuery } from "./../../service/api";
 
 export default function Article() {
   const location = useLocation();
