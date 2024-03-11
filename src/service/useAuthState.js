@@ -1,12 +1,12 @@
 import { useState, useEffect } from "react";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 
-const useGetUser = () => {
+const useAuthState = () => {
     const auth = getAuth();
 
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null); // Add error state
+    const [error, setError] = useState(null); 
 
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -14,7 +14,7 @@ const useGetUser = () => {
             setUser(user);
         }, (error) => {
             setLoading(false);
-            setError(error); // Update error state
+            setError(error); 
         });
 
         return () => unsubscribe();
@@ -23,4 +23,4 @@ const useGetUser = () => {
     return { user, loading, error };
 };
 
-export default useGetUser;
+export default useAuthState;

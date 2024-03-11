@@ -2,7 +2,9 @@ import { Box, Text, Container, Flex, Heading, Spacer } from "@chakra-ui/react";
 import SearchInput from "./searchInput";
 import { Link } from "react-router-dom";
 import SignInButton from "./signInButton";
+import useAuthState from "../service/useAuthState";
 export default function Navigation() {
+  const { user } = useAuthState();
   return (
     <Box bg="blue.500" py="2">
       <nav>
@@ -13,9 +15,11 @@ export default function Navigation() {
                 <Heading mb="2" mr="4" color="white">
                   <Link to="/">Paper</Link>
                 </Heading>
-                <Text color="white">
-                  <Link to="/bookmarks">Bookmarks</Link>
-                </Text>
+                {user && (
+                  <Text color="white">
+                    <Link to="/bookmarks">Bookmarks</Link>
+                  </Text>
+                )}
               </Flex>
             </Box>
             <Spacer />

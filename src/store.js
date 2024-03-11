@@ -1,6 +1,6 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { articleService } from "./features/article/articleSlice";
-import {  sectionService } from "./features/home/homeSlice";
+import { sectionService } from "./features/home/homeSlice";
 import searchSlice from "./features/search/searchSlice";
 import bookmarksSlice, {
   localStorageMiddleware,

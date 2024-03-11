@@ -4,35 +4,29 @@ import {
   addBookmark,
   removeBookmark,
 } from "../features/bookmarks/bookmarksSlice";
-import { doc, arrayRemove, updateDoc, arrayUnion } from "firebase/firestore";
-import db from "../service/firebase";
-import useGetUser from "../service/useGetUser";
-
-const addToFirebase = async (user, articleID) => {
-  const userRef = doc(db, "users", user.uid);
-  await updateDoc(userRef, { bookmarks: arrayUnion(articleID) });
-};
-
-const removeFromFirebase = async (user, articleID) => {
-  const userRef = doc(db, "users", user.uid);
-  await updateDoc(userRef, { bookmarks: arrayRemove(articleID) });
-};
+import useAuthState from "../service/useAuthState";
+import { addToFirebase, removeFromFirebase } from "../service/firebase";
 
 const BookmarkButton = ({ articleID, type, mb }) => {
   const dispatch = useDispatch();
   const toast = useToast();
-  const { user } = useGetUser();
+  const { user } = useAuthState();
+
   const handleClick = () => {
+    if (!user) {
+      toast({
+        description: "User not logged in. Please login to add bookmarks.",
+        status: "error",
+        duration: 1000,
+        position: "bottom-right",
+      });
+    }
     if (type === "add") {
       dispatch(addBookmark(articleID));
-      if (user) {
-        addToFirebase(user, articleID);
-      }
+      addToFirebase(user, articleID);
     } else if (type === "remove") {
       dispatch(removeBookmark(articleID));
-      if (user) {
-        removeFromFirebase(user, articleID);
-      }
+      removeFromFirebase(user, articleID);
     }
     toast({
       description: `Article ${

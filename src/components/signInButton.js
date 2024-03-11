@@ -8,16 +8,10 @@ import {
   signInWithPopup,
   signOut,
 } from "firebase/auth";
-import db from "./../service/firebase";
-import { doc, getDoc } from "firebase/firestore";
 import { useHistory } from "react-router-dom";
-import useGetUser from "../service/useGetUser";
+import useAuthState from "../service/useAuthState";
 import { useDispatch } from "react-redux";
-import {
-  clearBookmarks,
-  setBookmarks,
-  fetchBookmarkArticles,
-} from "../features/bookmarks/bookmarksSlice";
+import { clearBookmarks } from "../features/bookmarks/bookmarksSlice";
 
 const GoogleLogo = () => {
   return (
@@ -55,7 +49,7 @@ function SignInButton() {
   const provider = new GoogleAuthProvider();
   const toast = useToast();
   const history = useHistory();
-  const { user } = useGetUser();
+  const { user } = useAuthState();
   const dispatch = useDispatch();
   const checkRoute = () => {
     const currentLocation = history.location.pathname.toLowerCase();
@@ -94,18 +88,7 @@ function SignInButton() {
     setPersistence(auth, browserLocalPersistence)
       .then(() => {
         return signInWithPopup(auth, provider)
-          .then((result) => {
-            (async () => {
-              const docRef = doc(db, "users", result.user.uid);
-              const docSnap = await getDoc(docRef);
-
-              if (docSnap.exists()) {
-                const userData = docSnap.data();
-                dispatch(setBookmarks(userData.bookmarks));
-                dispatch(fetchBookmarkArticles());
-              }
-            })();
-
+          .then(() => {
             toast({
               description: "Logged in successfully.",
               status: "success",
