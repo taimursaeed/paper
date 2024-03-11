@@ -6,12 +6,14 @@ import {
   GoogleAuthProvider,
   setPersistence,
   signInWithPopup,
-  signOut
+  signOut,
 } from "firebase/auth";
 import db from "./../service/firebase";
 import { doc, getDoc } from "firebase/firestore";
 import { useHistory } from "react-router-dom";
 import useGetUser from "../service/useGetUser";
+import { useDispatch } from "react-redux";
+import { clearBookmarks, selectBookmarkArticlesIDs, setBookmarks } from "../features/bookmarks/bookmarksSlice";
 
 const GoogleLogo = () => {
   return (
@@ -50,7 +52,7 @@ function SignInButton() {
   const toast = useToast();
   const history = useHistory();
   const { user } = useGetUser();
-
+  const dispatch = useDispatch();
   const checkRoute = () => {
     const currentLocation = history.location.pathname.toLowerCase();
     if (currentLocation.includes("/bookmarks")) {
@@ -69,7 +71,7 @@ function SignInButton() {
             position: "bottom-right",
           });
 
-          // dispatch(resetBookmarks());
+          dispatch(clearBookmarks());
           checkRoute();
         })
         .catch((error) => {
@@ -94,7 +96,8 @@ function SignInButton() {
               const docSnap = await getDoc(docRef);
 
               if (docSnap.exists()) {
-                console.log("User's data:", docSnap.data()); 
+                const userData = docSnap.data();
+                dispatch(setBookmarks(userData.bookmarks));
               }
             })();
 
