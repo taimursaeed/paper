@@ -1,4 +1,4 @@
-import { Box, Container, Flex, Heading, Spacer } from "@chakra-ui/react";
+import { Box, Text, Container, Flex, Heading, Spacer } from "@chakra-ui/react";
 import SearchInput from "./searchInput";
 import { Link } from "react-router-dom";
 import SignInButton from "./signInButton";
@@ -9,9 +9,14 @@ export default function Navigation() {
         <Container maxW="container.lg">
           <Flex alignItems="center">
             <Box>
-              <Heading mb="2" color="white">
-                <Link to="/">Paper</Link>
-              </Heading>
+              <Flex alignItems="center">
+                <Heading mb="2" mr="4" color="white">
+                  <Link to="/">Paper</Link>
+                </Heading>
+                <Text color="white">
+                  <Link to="/bookmarks">Bookmarks</Link>
+                </Text>
+              </Flex>
             </Box>
             <Spacer />
             <Box>

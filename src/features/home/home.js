@@ -42,7 +42,6 @@ export default function Home() {
   return (
     <>
       <Flex justifyContent="flex-end" mb="-12">
-        <BookmarkButton type="view" />
         <ArticleSorter onChange={reverseOrder} />
       </Flex>
       {sections.map((section, id) => (

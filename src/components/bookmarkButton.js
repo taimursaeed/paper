@@ -1,5 +1,4 @@
 import { Button, Icon, useToast } from "@chakra-ui/react";
-import { useHistory } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import {
   addBookmark,
@@ -20,13 +19,11 @@ const removeFromFirebase = async (user, articleID) => {
 };
 
 const BookmarkButton = ({ articleID, type, mb }) => {
-  const history = useHistory();
   const dispatch = useDispatch();
   const toast = useToast();
   const { user } = useGetUser();
   const handleClick = () => {
-    if (type === "view") history.push(`/bookmarks`);
-    else if (type === "add") {
+    if (type === "add") {
       dispatch(addBookmark(articleID));
       if (user) {
         addToFirebase(user, articleID);
@@ -37,16 +34,14 @@ const BookmarkButton = ({ articleID, type, mb }) => {
         removeFromFirebase(user, articleID);
       }
     }
-    if (type !== "view") {
-      toast({
-        description: `Article ${
-          type === "add" ? "added" : "removed"
-        } in Bookmarks`,
-        status: "success",
-        duration: 1000,
-        position: "bottom-right",
-      });
-    }
+    toast({
+      description: `Article ${
+        type === "add" ? "added" : "removed"
+      } in Bookmarks`,
+      status: "success",
+      duration: 1000,
+      position: "bottom-right",
+    });
   };
 
   return (

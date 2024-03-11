@@ -13,7 +13,6 @@ import { useLocation } from "react-router-dom";
 import ArticleSection from "../../components/articleSection";
 import { useScrollPosition } from "@n8tb1t/use-scroll-position";
 import Loader from "../../components/loader";
-import BookmarkButton from "../../components/bookmarkButton";
 import ArticleSorter from "../../components/articleSorter";
 import ArticleSectionSkeleton from "../../components/articleSectionSkeleton";
 
@@ -72,7 +71,6 @@ export default function SearchedArticles() {
       <Flex justifyContent="space-between">
         <Heading mb="6" just="left">{searchedArticles.section.webTitle}</Heading>
         <Flex justifyContent="flex-end">
-          <BookmarkButton type="view"/>
           <ArticleSorter onChange={handleOrder}/>
         </Flex>
       </Flex>
