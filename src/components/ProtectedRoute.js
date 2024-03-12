@@ -1,18 +1,27 @@
 import React from "react";
-import { Route } from "react-router-dom";
-import { getAuth } from "firebase/auth";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { Redirect } from "react-router-dom/cjs/react-router-dom.min";
-const ProtectedRoute = ({ children, path }) => {
-  const auth = getAuth();
+import { useState, useEffect } from "react";
+import { Skeleton } from "@chakra-ui/react";
 
-  return (
-    <>
-      {auth.currentUser ? (
-        <Route path={path}>{children}</Route>
-      ) : (
-        <Redirect to="/" />
-      )}
-    </>
-  );
+const ProtectedRoute = ({ children }) => {
+  const [currentUser, setCurrentUser] = useState(null);
+  const [pending, setPending] = useState(true);
+
+  useEffect(() => {
+    const auth = getAuth();
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      setCurrentUser(user);
+      setPending(false);
+    });
+
+    return () => unsubscribe();
+  }, []);
+
+  if (pending) {
+    return <Skeleton height="350px" />;
+  }
+
+  return <>{currentUser ? children : <Redirect to="/" />}</>;
 };
 export default ProtectedRoute;

@@ -26,8 +26,6 @@ function App() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    console.log("user update app.js", user);
-
     if (user) {
       (async () => {
         const docRef = doc(db, "users", user.uid);
@@ -51,9 +49,11 @@ function App() {
               <Route path="/" exact>
                 <Home />
               </Route>
-              <ProtectedRoute path="/bookmarks">
-                <Bookmarks />
-              </ProtectedRoute>
+              <Route path="/bookmarks">
+                <ProtectedRoute>
+                  <Bookmarks />
+                </ProtectedRoute>
+              </Route>
               <Route path="/search" exact>
                 <SearchedArticles />
               </Route>
