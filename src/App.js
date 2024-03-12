@@ -19,6 +19,8 @@ import {
   fetchBookmarkArticles,
 } from "./features/bookmarks/bookmarksSlice";
 import { useDispatch } from "react-redux";
+import ProtectedRoute from "./components/ProtectedRoute";
+
 function App() {
   const { user } = useAuthState();
   const dispatch = useDispatch();
@@ -39,7 +41,6 @@ function App() {
       })();
     }
   }, [user, dispatch]);
-  
   return (
     <ChakraProvider>
       <Router>
@@ -50,9 +51,9 @@ function App() {
               <Route path="/" exact>
                 <Home />
               </Route>
-              <Route path="/bookmarks" exact>
+              <ProtectedRoute path="/bookmarks">
                 <Bookmarks />
-              </Route>
+              </ProtectedRoute>
               <Route path="/search" exact>
                 <SearchedArticles />
               </Route>
