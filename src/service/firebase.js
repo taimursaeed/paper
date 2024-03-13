@@ -1,5 +1,5 @@
 import { initializeApp } from "firebase/app";
-import { getFirestore } from "firebase/firestore";
+import { getFirestore, setDoc } from "firebase/firestore";
 import { doc } from "firebase/firestore";
 import { arrayUnion, arrayRemove, updateDoc } from "firebase/firestore";
 const firebaseConfig = {
@@ -10,19 +10,35 @@ const firebaseConfig = {
   messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
   appId: process.env.REACT_APP_FIREBASE_APP_ID,
 };
-const app = initializeApp(firebaseConfig);
 
+const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
 export const addToFirebase = async (user, data) => {
-  const userRef = doc(db, "users", user.uid);
-  await updateDoc(userRef, { bookmarks: arrayUnion(data) });
+  try {
+    const userRef = doc(db, "users", user.uid);
+    await setDoc(userRef, { bookmarks: data });
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+export const putToFirebase = async (user, data) => {
+  try {
+    const userRef = doc(db, "users", user.uid);
+    await updateDoc(userRef, { bookmarks: arrayUnion(data) });
+  } catch (error) {
+    console.error(error);
+  }
 };
 
 export const removeFromFirebase = async (user, data) => {
-  const userRef = doc(db, "users", user.uid);
-  
-  await updateDoc(userRef, { bookmarks: arrayRemove(data) });
+  try {
+    const userRef = doc(db, "users", user.uid);
+    await updateDoc(userRef, { bookmarks: arrayRemove(data) });
+  } catch (error) {
+    console.error(error);
+  }
 };
 
 export default db;

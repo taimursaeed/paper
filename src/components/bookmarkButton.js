@@ -5,7 +5,7 @@ import {
   removeBookmark,
 } from "../features/bookmarks/bookmarksSlice";
 import useAuthState from "../service/useAuthState";
-import { addToFirebase, removeFromFirebase } from "../service/firebase";
+import { putToFirebase, removeFromFirebase } from "../service/firebase";
 
 const BookmarkButton = ({ articleID, type, mb }) => {
   const dispatch = useDispatch();
@@ -23,7 +23,7 @@ const BookmarkButton = ({ articleID, type, mb }) => {
     }
     if (type === "add") {
       dispatch(addBookmark(articleID));
-      addToFirebase(user, articleID);
+      putToFirebase(user, articleID);
     } else if (type === "remove") {
       dispatch(removeBookmark(articleID));
       removeFromFirebase(user, articleID);

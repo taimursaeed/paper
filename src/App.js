@@ -12,7 +12,7 @@ import SearchedArticles from "./features/search/searchedArticles";
 import Bookmarks from "./features/bookmarks/bookmarks";
 import useAuthState from "./service/useAuthState";
 import { useEffect } from "react";
-import { doc, getDoc } from "firebase/firestore";
+import { doc, getDoc, setDoc } from "firebase/firestore";
 import db from "./service/firebase";
 import {
   setBookmarks,
@@ -30,11 +30,14 @@ function App() {
       (async () => {
         const docRef = doc(db, "users", user.uid);
         const docSnap = await getDoc(docRef);
-
         if (docSnap.exists()) {
           const userData = docSnap.data();
           dispatch(setBookmarks(userData.bookmarks));
           dispatch(fetchBookmarkArticles());
+        } else {
+          await setDoc(docRef, {
+            bookmarks: [],
+          });
         }
       })();
     }
